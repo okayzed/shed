@@ -33,7 +33,7 @@ function runDoc(room, doc, stdin, socket) {
       // filter out WARNING from docker cgroup crap
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("WARNING: Your kernel") == -1) {
-          results.push(lines[i]);
+          results.push(lines[i] + "\n");
         }
       }
 
@@ -58,6 +58,11 @@ function runDoc(room, doc, stdin, socket) {
     proc.stderr.on("data", function(data) {
       stdout.push(data.toString());
     });
+
+    // 10 second timeout in case someone tries to forkbomb
+    setTimeout(function() {
+      proc.kill();
+    }, 10000);
 }
 
 module.exports = {

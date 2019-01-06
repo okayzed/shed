@@ -34,6 +34,7 @@ app.get('/p/:id', function(req, res){
 // setting up static directories
 app.use('/codemirror', express.static('node_modules/codemirror'));
 app.use('/dist', express.static('src/client/dist'));
+app.use('/js', express.static('src/client/js'));
 
 var port = process.env.PORT || 3301;
 http.listen(port, function(){

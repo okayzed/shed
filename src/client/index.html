@@ -3,36 +3,23 @@
   <meta charset="UTF-8">
   <title>shed.ot</title>
 
-  <!-- ot.js -->
-  <script src="/dist/ot.js"></script>
-  <script src="/dist/split.js"></script>
+  <link rel="stylesheet" href="/dist/all.css">
 
-  <!-- CodeMirror -->
-  <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
-  <script src="/codemirror/lib/codemirror.js"></script>
-  <script src="/codemirror/addon/mode/loadmode.js"></script>
-  <script src="/codemirror/mode/meta.js"></script>
-  <script src="/codemirror/keymap/vim.js"></script>
-  <script src="/codemirror/keymap/emacs.js"></script>
+  <script src="/js/jquery-3.3.1.js"> </script>
+  <script src="/js/split.js"> </script>
+  <script src="/js/ot.js"> </script>
+  <script src="/js/socket.io.js"> </script>
+  <script src="/js/codemirror.js"></script>
+  <script src="/js/editor.js"></script>
+
   <script>
     CodeMirror.modeURL = "/codemirror/mode/%N/%N.js";
   </script>
 
-  <!-- socket.io -->
-  <script src="/dist/socket.io.js"></script>
-
-  <!-- stylings -->
-  <link rel="stylesheet" href="/dist/editor.css">
-  <link rel="stylesheet" href="/dist/themes.css">
-  <link rel="stylesheet" href="/dist/bootstrap.css">
-
-  <script src="/dist/jquery-3.3.1.js"> </script>
 
 </head>
 
 <body>
-
-
   <div class='container-fluid editor-wrapper'>
     <div class="split-box clearfix">
       <div class="split-pane active" id="editorbox">
@@ -69,10 +56,9 @@
 
   </div>
 
-  <!-- init client -->
   <script>
-    var docId = "<%= docId %>";
+    initShed("<%= docId %>");
   </script>
-  <script src="/dist/editor.js"></script>
+
 </body>
 </html>
