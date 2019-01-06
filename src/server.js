@@ -2,21 +2,42 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var fs = require('fs');
 
 var runDoc = require("./runner").runDoc;
 var Post = require("./models").Post;
+var ejs = require('ejs');
 
-// TODO: allow for different pastes based on routing
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/client/index.html');
+function randid() {
+  var i = parseInt(Math.random() * 1e9+7)
+  return i.toString(16);
+}
+
+app.get('/', function(req, res) {
+  var welcomeStr = fs.readFileSync(__dirname + '/client/welcome.html');
+  var welcomeTemplate = ejs.compile(welcomeStr.toString(), {});
+  var htmlStr = welcomeTemplate();
+  res.send(htmlStr);
+});
+
+app.get('/new', function(req, res) {
+  res.redirect('/p/' + randid());
+});
+
+app.get('/p/:id', function(req, res){
+  var pasteStr = fs.readFileSync(__dirname + '/client/index.html');
+  var pasteTemplate = ejs.compile(pasteStr.toString(), {});
+  var htmlStr = pasteTemplate({ docId: req.params.id });
+  res.send(htmlStr);
 });
 
 // setting up static directories
 app.use('/codemirror', express.static('node_modules/codemirror'));
-app.use('/dist', express.static('src/dist'));
+app.use('/dist', express.static('src/client/dist'));
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+var port = process.env.PORT || 3301;
+http.listen(port, function(){
+  console.log('listening on *:' + port);
 });
 
 var EditorSocketIOServer = require('./ot.js/editor-socketio-server.js');

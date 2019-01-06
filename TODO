@@ -1,0 +1,38 @@
+* find and fix bugs (always a priority)
+
+## multi user features
+
+* add join messages for when someone connects
+* add nick names for users (give them a default name until they change it)
+* add mouse pointers to see where everyone is pointing (togetherjs does it with absolute positioning)
+* add chat pane (with persistent history?)
+
+## management features
+
+* add more language support (see runners/javascript.sh or similar)
+* add "save button" that forks a current room to a new room
+* add ability to make read only code (save an immutable copy)
+
+## ui stuff
+
+* add a welcome page
+* add a favicon
+* style the welcome page (and remove its error about ace editor)
+* style bottom bar to have dedicated space and adjust height of panes to calc(100% - statusbar)
+* add mobile friendly UI
+* color stderr lines red (change server.js and client.js to do so)
+* add settings UI (currently use ctrl-, to get to settings pane from ace, but we only need a subset of settings: keybindings, auto close brackets, tab spacings, color scheme, font size)
+
+
+## done
+
+x redirect to new paste on first load
+x switch to codemirror
+x switch to ot.js
+x fix cross room pollination when results of a program run are sent
+x add editor settings that sync to local storage
+x interleave the stderr and stdout properly
+x switch to diff-merge-patch from automerge
+x retain cursor position when someone else inserts text
+x show user cursors and where a given user is in the doc (https://github.com/convergencelabs/ace-collab-ext)
+x show user selections

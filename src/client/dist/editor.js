@@ -1,5 +1,5 @@
 var socket = io()
-var docId = "main";
+var docId = window.docId || "main";
 var cm;
 
 function setLang(mode) {
@@ -28,20 +28,35 @@ function runCode() {
 
 // socket stuff
 
-socket.emit("join", docId);
+var _dc = false;
+socket.on("disconnect", function() {
+  console.log("SOCKET DISCONNECTED");
+  _dc = true;
+});
+
+socket.on('connect', function() {
+  console.log("SOCKET CONNECTED");
+  if (_dc) { window.location.reload(); }
+  socket.emit("join", docId);
+});
 
 socket.on("doc", function(data) {
   cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true})
   cm.setValue(data.str)
-  var serverAdapter = new ot.SocketIOAdapter(socket)
-  var editorAdapter = new ot.CodeMirrorAdapter(cm)
+
+  cm.setOption("lineWrapping", true);
+//  cm.on("scrollCursorIntoView", function(e) {
+//    console.log("TRYING TO SCROLL CURSOR INTO VIEW");
+//  });
+
+  var serverAdapter = new ot.SocketIOAdapter(socket);
+  var editorAdapter = new ot.CodeMirrorAdapter(cm);
   var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
 
   setTheme("monokai");
 });
 
 socket.on("output", function(output) {
-  console.log("OUTPUT", output);
   var pre = $(".stdout-pane pre")
     .append(output);
   pre.scrollTop(pre.prop("scrollHeight"));

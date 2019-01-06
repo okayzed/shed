@@ -4,29 +4,29 @@
   <title>shed.ot</title>
 
   <!-- ot.js -->
-  <script src="./dist/ot.js"></script>
-  <script src="./dist/split.js"></script>
+  <script src="/dist/ot.js"></script>
+  <script src="/dist/split.js"></script>
 
   <!-- CodeMirror -->
-  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
-  <script src="codemirror/lib/codemirror.js"></script>
-  <script src="codemirror/addon/mode/loadmode.js"></script>
-  <script src="codemirror/mode/meta.js"></script>
-  <script src="codemirror/keymap/vim.js"></script>
-  <script src="codemirror/keymap/emacs.js"></script>
+  <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+  <script src="/codemirror/lib/codemirror.js"></script>
+  <script src="/codemirror/addon/mode/loadmode.js"></script>
+  <script src="/codemirror/mode/meta.js"></script>
+  <script src="/codemirror/keymap/vim.js"></script>
+  <script src="/codemirror/keymap/emacs.js"></script>
   <script>
-    CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
+    CodeMirror.modeURL = "/codemirror/mode/%N/%N.js";
   </script>
 
   <!-- socket.io -->
-  <script src="dist/socket.io.js"></script>
+  <script src="/dist/socket.io.js"></script>
 
   <!-- stylings -->
-  <link rel="stylesheet" href="dist/editor.css">
-  <link rel="stylesheet" href="dist/themes.css">
-  <link rel="stylesheet" href="dist/bootstrap.css">
+  <link rel="stylesheet" href="/dist/editor.css">
+  <link rel="stylesheet" href="/dist/themes.css">
+  <link rel="stylesheet" href="/dist/bootstrap.css">
 
-  <script src="./dist/jquery-3.3.1.js"> </script>
+  <script src="/dist/jquery-3.3.1.js"> </script>
 
 </head>
 
@@ -70,6 +70,9 @@
   </div>
 
   <!-- init client -->
-  <script src="dist/editor.js"></script>
+  <script>
+    var docId = "<%= docId %>";
+  </script>
+  <script src="/dist/editor.js"></script>
 </body>
 </html>
