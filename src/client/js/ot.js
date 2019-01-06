@@ -1,12 +1,3 @@
-/*
- *    /\
- *   /  \ ot 0.0.14
- *  /    \ http://operational-transformation.github.com
- *  \    /
- *   \  / (c) 2012-2014 Tim Baumann <tim@timbaumann.info> (http://timbaumann.info)
- *    \/ ot may be freely distributed under the MIT license.
- */
-
 if (typeof ot === 'undefined') {
   // Export for browsers
   var ot = {};
@@ -654,7 +645,6 @@ ot.Selection = (function (global) {
 if (typeof module === 'object') {
   module.exports = ot.Selection;
 }
-
 if (typeof ot === 'undefined') {
   // Export for browsers
   var ot = {};
@@ -846,7 +836,6 @@ ot.UndoManager = (function () {
 if (typeof module === 'object') {
   module.exports = ot.UndoManager;
 }
-
 // translation of https://github.com/djspiewak/cccp/blob/master/agent/src/main/scala/com/codecommit/cccp/agent/state.scala
 
 if (typeof ot === 'undefined') {
@@ -881,7 +870,7 @@ ot.Client = (function (global) {
     this.revision++;
     this.setState(this.state.serverAck(this));
   };
-  
+
   Client.prototype.serverReconnect = function () {
     if (typeof this.state.resend === 'function') { this.state.resend(this); }
   };
@@ -1049,7 +1038,6 @@ ot.Client = (function (global) {
 if (typeof module === 'object') {
   module.exports = ot.Client;
 }
-
 /*global ot */
 
 ot.CodeMirrorAdapter = (function (global) {
@@ -1304,7 +1292,7 @@ ot.CodeMirrorAdapter = (function (global) {
     cursorEl.style.borderLeftStyle = 'solid';
     cursorEl.style.borderLeftColor = color;
     cursorEl.style.height = (cursorCoords.bottom - cursorCoords.top) * 0.9 + 'px';
-    cursorEl.style.position = "absolute";
+    cursorEl.style.position = 'absolute';
     cursorEl.style.zIndex = 0;
     cursorEl.setAttribute('data-clientid', clientId);
     return this.cm.setBookmark(cursorPos, { widget: cursorEl, insertLeft: true });
@@ -1385,7 +1373,6 @@ ot.CodeMirrorAdapter = (function (global) {
   return CodeMirrorAdapter;
 
 }(this));
-
 /*global ot */
 
 ot.SocketIOAdapter = (function () {
@@ -1690,6 +1677,15 @@ ot.EditorClient = (function () {
         self.applyServer(TextOperation.fromJSON(operation));
       },
       selection: function (clientId, selection) {
+        // [okay] I don't like cursor jitter;
+        if (!self.state instanceof ot.Client.Synchronized) {
+          return;
+        }
+
+        if (selection && selection.revision != self.revision) {
+          return;
+        }
+
         if (selection) {
           self.getClientObject(clientId).updateSelection(
             self.transformSelection(Selection.fromJSON(selection))
@@ -1823,6 +1819,11 @@ ot.EditorClient = (function () {
 
   EditorClient.prototype.sendSelection = function (selection) {
     if (this.state instanceof Client.AwaitingWithBuffer) { return; }
+
+    if (selection) {
+      selection.revision = this.revision;
+    }
+
     this.serverAdapter.sendSelection(selection);
   };
 

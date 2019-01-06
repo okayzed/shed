@@ -50,7 +50,8 @@ EditorSocketIOServer.prototype.addClient = function (socket) {
           console.log("User doesn't have the right to edit.");
           return;
         }
-        self.updateSelection(socket, obj && Selection.fromJSON(obj));
+
+        self.updateSelection(socket, obj);
       });
     })
     .on('disconnect', function () {

@@ -252,6 +252,7 @@ ot.CodeMirrorAdapter = (function (global) {
     cursorEl.style.borderLeftStyle = 'solid';
     cursorEl.style.borderLeftColor = color;
     cursorEl.style.height = (cursorCoords.bottom - cursorCoords.top) * 0.9 + 'px';
+    cursorEl.style.position = 'absolute';
     cursorEl.style.zIndex = 0;
     cursorEl.setAttribute('data-clientid', clientId);
     return this.cm.setBookmark(cursorPos, { widget: cursorEl, insertLeft: true });

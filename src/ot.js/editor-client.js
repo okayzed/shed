@@ -136,6 +136,15 @@ ot.EditorClient = (function () {
         self.applyServer(TextOperation.fromJSON(operation));
       },
       selection: function (clientId, selection) {
+        // [okay] I don't like cursor jitter;
+        if (!self.state instanceof ot.Client.Synchronized) {
+          return;
+        }
+
+        if (selection && selection.revision != self.revision) {
+          return;
+        }
+
         if (selection) {
           self.getClientObject(clientId).updateSelection(
             self.transformSelection(Selection.fromJSON(selection))
@@ -269,6 +278,11 @@ ot.EditorClient = (function () {
 
   EditorClient.prototype.sendSelection = function (selection) {
     if (this.state instanceof Client.AwaitingWithBuffer) { return; }
+
+    if (selection) {
+      selection.revision = this.revision;
+    }
+
     this.serverAdapter.sendSelection(selection);
   };
 
