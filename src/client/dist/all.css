@@ -412,6 +412,27 @@ html, body, #page_content, .split-box, .editor-wrapper {
   width: 100%;
 }
 
+.modal {
+ overflow-y: auto;
+}
+
+.modal-open {
+ overflow: hidden;
+ padding-right: 0px !important;
+}
+
+.separator {
+  margin: 10px;
+}
+
+.settings .label {
+  font-weight: bold;
+}
+
+.settings .controls {
+  float: right;
+}
+
 /* STDIN / STDOUT PANES */
 
 #outputbox {
@@ -468,7 +489,7 @@ html, body, #page_content, .split-box, .editor-wrapper {
   opacity: 0.5;
 }
 
-.toolbar  &:hover {
+.toolbar:hover {
   opacity: 1;
 }
 
@@ -478,8 +499,15 @@ html, body, #page_content, .split-box, .editor-wrapper {
 }
 
 .toolbar select {
-  height: 40px;
+  height: 36px;
 }
+
+.settings {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
 
 /*
  * SPLIT STYLING

@@ -19,7 +19,7 @@ function setTheme(mode) {
 }
 
 function setKeymap(mode) {
-  cm.setOption("keyMap", "vim");
+  cm.setOption("keyMap", mode);
 }
 
 function runCode() {
@@ -51,7 +51,6 @@ function initShed(id) {
   });
 
   socket.on("doc", function(data) {
-    cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true})
     cm.setValue(data.str)
 
     cm.setOption("lineWrapping", true);
@@ -59,8 +58,6 @@ function initShed(id) {
     var serverAdapter = new ot.SocketIOAdapter(socket);
     var editorAdapter = new ot.CodeMirrorAdapter(cm);
     var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
-
-    setTheme("monokai");
   });
 
   socket.on("output", function(output) {
@@ -119,5 +116,74 @@ function initShed(id) {
   $(".run").click(function() {
     var stdin = $(".stdin-pane textarea").val();
     socket.emit("run", docId, stdin);
+  });
+
+  var prevSettings = {};
+  function setSettings(options) {
+    var anyChange = false;
+    if (options.keymap != prevSettings.keymap) {
+      setKeymap(options.keymap.replace("kb_", ""));
+      anyChange = true;
+    }
+
+    if (options.colorscheme != prevSettings.colorscheme) {
+      var cs = options.colorscheme;
+      if (cs == "color_light") {
+        setTheme("default");
+      } else {
+        setTheme("monokai");
+      }
+      anyChange = true;
+    }
+
+    if (anyChange) {
+      localStorage.settings = JSON.stringify(options);
+    }
+
+    prevSettings = options;
+  }
+
+  function checkSettings() {
+    var settingsEl = $("#settingsModal");
+    var keymapEl = settingsEl.find(".controls.keymap :checked");
+    var csEl = settingsEl.find(".controls.colorscheme :checked");
+
+    setSettings({
+      keymap: keymapEl.attr("id"),
+      colorscheme: csEl.attr("id")
+    });
+
+  }
+
+  function loadSettings() {
+    var options = JSON.parse(localStorage.settings || "{}");
+    var settingsEl = $("#settingsModal");
+    var keymap = settingsEl.find("#" + options.keymap);
+    $(".controls.keymap input").prop("checked", false);
+    keymap.click();
+
+    var cs = settingsEl.find("#" + options.colorscheme);
+    $(".controls.colorscheme input").prop("checked", false);
+    cs.click();
+
+    setSettings(options);
+  }
+
+
+  $(function() {
+    cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true});
+
+    var settingsInterval;
+    $("#settingsModal").on("shown.bs.modal", function() {
+      clearInterval(settingsInterval);
+      settingsInterval = setInterval(checkSettings, 500);
+    });
+
+    $("#settingsModal").on("hidden.bs.modal", function() {
+      clearInterval(settingsInterval);
+      checkSettings();
+    });
+
+    loadSettings();
   });
 }

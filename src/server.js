@@ -6,7 +6,15 @@ var fs = require('fs');
 
 var runDoc = require("./runner").runDoc;
 var Post = require("./models").Post;
+var path = require('path');
 var ejs = require('ejs');
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.engine('html', ejs.renderFile);
+
+
+
 
 function randid() {
   var i = parseInt(Math.random() * 1e9+7)
@@ -14,10 +22,7 @@ function randid() {
 }
 
 app.get('/', function(req, res) {
-  var welcomeStr = fs.readFileSync(__dirname + '/client/welcome.html');
-  var welcomeTemplate = ejs.compile(welcomeStr.toString(), {});
-  var htmlStr = welcomeTemplate();
-  res.send(htmlStr);
+  res.render('welcome.html', {});
 });
 
 app.get('/new', function(req, res) {
@@ -25,10 +30,7 @@ app.get('/new', function(req, res) {
 });
 
 app.get('/p/:id', function(req, res){
-  var pasteStr = fs.readFileSync(__dirname + '/client/index.html');
-  var pasteTemplate = ejs.compile(pasteStr.toString(), {});
-  var htmlStr = pasteTemplate({ docId: req.params.id });
-  res.send(htmlStr);
+  res.render('index.html', { docId: req.params.id });
 });
 
 // setting up static directories
