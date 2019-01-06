@@ -1,0 +1,75 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>shed.ot</title>
+
+  <!-- ot.js -->
+  <script src="./dist/ot.js"></script>
+  <script src="./dist/split.js"></script>
+
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+  <script src="codemirror/lib/codemirror.js"></script>
+  <script src="codemirror/addon/mode/loadmode.js"></script>
+  <script src="codemirror/mode/meta.js"></script>
+  <script src="codemirror/keymap/vim.js"></script>
+  <script src="codemirror/keymap/emacs.js"></script>
+  <script>
+    CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
+  </script>
+
+  <!-- socket.io -->
+  <script src="dist/socket.io.js"></script>
+
+  <!-- stylings -->
+  <link rel="stylesheet" href="dist/editor.css">
+  <link rel="stylesheet" href="dist/themes.css">
+  <link rel="stylesheet" href="dist/bootstrap.css">
+
+  <script src="./dist/jquery-3.3.1.js"> </script>
+
+</head>
+
+<body>
+
+
+  <div class='container-fluid editor-wrapper'>
+    <div class="split-box clearfix">
+      <div class="split-pane active" id="editorbox">
+        <div class="clearfix mbl toolbar">
+          <span class="rfloat">
+            <select class="language">
+              <option value=""></option>
+              <option value="javascript">javascript</option>
+              <option value="ruby">ruby</option>
+              <option value="cpp">cpp</option>
+              <option value="python">python</option>
+            </select>
+          </span>
+
+          <div class="run rfloat btn btn-info">Run</div>
+        </div>
+
+        <textarea id="note" style="display: none"></textarea>
+      </div>
+
+      <div class="split-pane clearfix fd" id="outputbox" style='width: 0px'>
+        <div class='stdin-pane pane third collapse'>
+          <textarea ></textarea>
+        </div>
+
+        <div>
+          <span class="heading stdout">stdout + stderr</span>
+          <span class="heading stdin">(toggle stdin)</span>
+        </div>
+        <div class='stdout-pane stdout'>
+        <pre></pre> </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- init client -->
+  <script src="dist/editor.js"></script>
+</body>
+</html>

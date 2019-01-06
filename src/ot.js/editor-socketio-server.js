@@ -81,7 +81,6 @@ EditorSocketIOServer.prototype.onOperation = function (socket, revision, operati
   try {
     var clientId = socket.id;
     var wrappedPrime = this.receiveOperation(revision, wrapped);
-    console.log("new operation: " + wrapped);
     this.getClient(clientId).selection = wrappedPrime.meta;
     socket.emit('ack');
     socket.broadcast['in'](this.docId).emit(
@@ -91,6 +90,9 @@ EditorSocketIOServer.prototype.onOperation = function (socket, revision, operati
   } catch (exc) {
     console.error(exc);
   }
+
+  this.emit("changed", this.document);
+
 };
 
 EditorSocketIOServer.prototype.updateSelection = function (socket, selection) {
