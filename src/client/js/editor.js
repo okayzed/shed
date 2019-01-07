@@ -66,6 +66,11 @@ function initShed(id) {
     pre.scrollTop(pre.prop("scrollHeight"));
   });
 
+  socket.on("stdin", function(stdin) {
+    var stdinEl = $(".stdin-pane textarea");
+    stdinEl.val(stdin);
+  });
+
   socket.on("ran", function(stdout, stderr) {
     var textEl = $("<div />");
     textEl.text(stdout.join(""));
@@ -111,6 +116,10 @@ function initShed(id) {
 
       }
     });
+  });
+
+  $(".stdin-pane textarea").bind('input propertychange', function() {
+    socket.emit("stdin", $(".stdin-pane textarea").val());
   });
 
   $(".run").click(function() {

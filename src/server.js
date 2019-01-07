@@ -78,7 +78,7 @@ function getDoc(randid, cb) {
 
 
 io.on('connection', function(socket) {
-  var _room;
+  var _room, _stdin;
   socket.on("join", function(room) {
     _room = room;
     var server = getRoom(room, function(server) {
@@ -86,6 +86,7 @@ io.on('connection', function(socket) {
 
       getDoc(room, function(doc) {
         socket.emit("set_language", doc.filetype);
+        socket.emit("stdin", doc.stdin);
       });
     });
   });
@@ -103,6 +104,16 @@ io.on('connection', function(socket) {
     getDoc(room, function(doc) {
       console.log("SET FILETYPE", lang);
       doc.filetype = lang;
+      doc.save();
+    });
+  });
+
+
+  socket.on("stdin", function(stdin) {
+    _stdin = stdin;
+    socket.broadcast.in(_room).emit("stdin", stdin);
+    getDoc(_room, function(doc) {
+      doc.stdin = _stdin;
       doc.save();
     });
   });

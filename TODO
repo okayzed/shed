@@ -15,9 +15,7 @@
 
 ## ui stuff
 
-* add a welcome page
 * add a favicon
-* style the welcome page (and remove its error about ace editor)
 * style bottom bar to have dedicated space and adjust height of panes to calc(100% - statusbar)
 * add mobile friendly UI
 * color stderr lines red (change server.js and client.js to do so)
@@ -26,6 +24,9 @@
 
 ## done
 
+x sync stdin between users
+x add a welcome page
+x style the welcome page (and remove its error about ace editor)
 x redirect to new paste on first load
 x switch to codemirror
 x switch to ot.js

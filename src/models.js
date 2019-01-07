@@ -15,17 +15,14 @@ var sequelize = new Sequelize('database', 'username', 'password', {
 var Post = sequelize.define('Post', {
   text: Sequelize.TEXT,
   randid: Sequelize.STRING,
-  filetype: Sequelize.STRING
+  filetype: Sequelize.STRING,
+  stdin: Sequelize.TEXT
 });
 
 
 var force_reset = process.env.RESET;
 sequelize.sync({ force: force_reset }).then(function() {
   console.log("Synced SQL DB to models");
-
-  if (force_reset) {
-    var Post = require_app("models/post");
-  }
 });
 
 // all models defined need to be required somewhere before the main setup is called
