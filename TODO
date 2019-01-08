@@ -19,11 +19,14 @@
 * style bottom bar to have dedicated space and adjust height of panes to calc(100% - statusbar)
 * add mobile friendly UI
 * color stderr lines red (change server.js and client.js to do so)
-* add settings UI (currently use ctrl-, to get to settings pane from ace, but we only need a subset of settings: keybindings, auto close brackets, tab spacings, color scheme, font size)
+* settings for auto close brackets
+* settings for auto-close brackets
+* settings for font size
 
 
 ## done
 
+x add settings UI (currently use ctrl-, to get to settings pane from ace, but we only need a subset of settings: keybindings, auto close brackets, tab spacings, color scheme, font size)
 x sync stdin between users
 x add a welcome page
 x style the welcome page (and remove its error about ace editor)

@@ -376,7 +376,7 @@ span.CodeMirror-selectedtext { background: none; }
 .CodeMirror-dialog button {
   font-size: 70%;
 }
-body, html { 
+body, html {
   height: 100%;
   padding: 0px;
   margin: 0px;
@@ -431,6 +431,7 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 .settings .controls {
   float: right;
+  width: 200px;
 }
 
 /* STDIN / STDOUT PANES */
@@ -469,12 +470,12 @@ html, body, #page_content, .split-box, .editor-wrapper {
 .stdout-pane {
   flex: 1;
   height: 75%;
-
+  overflow: auto;
   background-color: #efefef;
 }
 
 .stdout-pane pre {
-  overflow-y: auto;
+  overflow: auto;
   max-height: 90%;
   padding: 10px;
   white-space: pre-wrap;
@@ -494,13 +495,19 @@ html, body, #page_content, .split-box, .editor-wrapper {
 }
 
 .toolbar .run {
-  margin-right: 5px;
+  margin-right: 10px;
   margin-left: 5px;
 }
 
-.toolbar select {
-  height: 36px;
+.toolbar select, .toolbar button {
+    vertical-align: top;
+    margin:0;
+
+    padding:0 .6em;
+    height:2.3em;
+    box-sizing:border-box;
 }
+
 
 .settings {
   position: absolute;
