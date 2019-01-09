@@ -72,6 +72,10 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 .split-pane {
   height: 100%;
+  -webkit-transition: height 1s, width 1s; /* Safari */
+  transition: height 1s, width 1s;
+
+
 }
 
 .stdin-pane {
@@ -137,6 +141,10 @@ html, body, #page_content, .split-box, .editor-wrapper {
   position: absolute;
   bottom: 10px;
   right: 20px;
+}
+
+.btn.settings {
+  z-index: 10;
 }
 
 

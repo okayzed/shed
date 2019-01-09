@@ -150,7 +150,7 @@ function buildSettingsModal() {
       name: "autoCloseBrackets",
       text: "Auto Close Brackets",
       options: {
-        "Enabled": true,
+        "Enabled": "true",
         // we use empty string as falsey bc it can store on the DOM properly
         "Disabled": ""
       }
