@@ -20,7 +20,7 @@
 * add mobile friendly UI
 * color stderr lines red (change server.js and client.js to do so)
 * settings for auto close brackets
-* settings for auto-close brackets
+* settings for auto complete
 * settings for font size
 
 
