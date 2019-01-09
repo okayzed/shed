@@ -65,10 +65,35 @@ function initShed(id) {
   });
 
 
-  var splitobj = Split(["#editorbox","#outputbox"], {
-    cursor: "col-resize",
-    gutterSize: 6,
-  });
+  var splitobj;
+  function makeSplit(dir) {
+    dir = dir || "horizontal";
+    if (splitobj) { splitobj.destroy(); }
+
+    if (dir == "horizontal") {
+      $(".split-pane").css("float", "left");
+    } else {
+      $("#outputbox").css("width", "100%");
+      $(".split-pane").css("float", "none");
+    }
+
+    splitobj = Split(["#editorbox","#outputbox"], {
+      cursor: "col-resize",
+      gutterSize: 6,
+      direction: dir
+    });
+  }
+
+  var resize = _.debounce(function() {
+    if (window.innerWidth < 768 ) {
+      makeSplit("vertical");
+    } else {
+      makeSplit("horizontal");
+    }
+  }, 200);
+  window.onresize = resize;
+
+  $(resize);
 
 
   // event handlers

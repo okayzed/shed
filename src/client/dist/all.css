@@ -380,6 +380,7 @@ body, html {
   height: 100%;
   padding: 0px;
   margin: 0px;
+  overflow: hidden;
 }
 
 .CodeMirror {
@@ -395,10 +396,6 @@ body .container-fluid {
 
 html, body, #page_content, .split-box, .editor-wrapper {
   height: 100%;
-}
-
-.split-box {
-  display: flex;
 }
 
 /* EDITOR STUFF */
@@ -444,6 +441,11 @@ html, body, #page_content, .split-box, .editor-wrapper {
 #outputbox .heading.stdin {
   cursor: pointer;
   text-decoration: underline;
+  margin-left: 10px;
+}
+
+.heading {
+  margin-left: 10px;
 }
 
 .split-pane {
@@ -485,7 +487,7 @@ html, body, #page_content, .split-box, .editor-wrapper {
 .toolbar {
   position: absolute;
   top: 10px;
-  right: 0px;
+  right: 10px;
   z-index: 10;
   opacity: 0.5;
 }
@@ -512,7 +514,7 @@ html, body, #page_content, .split-box, .editor-wrapper {
 .settings {
   position: absolute;
   bottom: 10px;
-  right: 10px;
+  right: 20px;
 }
 
 
