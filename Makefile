@@ -19,7 +19,7 @@ CM_DEPS = $(patsubst %, node_modules/codemirror/%, $(CM_FILES))
 bundle-codemirror: $(CM_DEPS)
 		cat $^ > src/client/js/codemirror.js
 
-CSS_FILES = node_modules/codemirror/lib/codemirror.css node_modules/codemirror/addon/dialog/dialog.css src/client/css/editor.css src/client/css/themes.css src/client/css/bootstrap.css 
+CSS_FILES = node_modules/codemirror/lib/codemirror.css node_modules/codemirror/addon/dialog/dialog.css src/client/css/editor.css src/client/css/themes.css src/client/css/bootstrap.css  src/client/css/bootstrap.flatly.css
 bundle-css: $(CSS_FILES)
 		cat $^ > src/client/dist/all.css
 

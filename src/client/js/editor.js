@@ -44,7 +44,7 @@ function initShed(id) {
   });
 
   socket.on("ran", function(stdout, stderr) {
-    var textEl = $("<div />");
+    var textEl = $("<div class='card card-body' />");
     textEl.text(stdout.join(""));
 
     var errEl = $("<div class='stderr'/>");
@@ -125,8 +125,6 @@ function initShed(id) {
   });
 
   $(".output-toggle").on("click", function() {
-    console.log("EDITOR TOGGLE CLICKED");
-
     $("#outputbox").toggle();
     $("#editorbox").toggle();
 
@@ -135,7 +133,6 @@ function initShed(id) {
     } else {
       $(".output-toggle").text("Output");
     }
-
   });
 
   $(function() {

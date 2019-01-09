@@ -80,10 +80,6 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 .split-pane {
   height: 100%;
-  -webkit-transition: height 1s, width 1s; /* Safari */
-  transition: height 1s, width 1s;
-
-
 }
 
 .stdin-pane {
