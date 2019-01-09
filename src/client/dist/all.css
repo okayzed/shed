@@ -433,9 +433,17 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 /* STDIN / STDOUT PANES */
 
+.output-toggle {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
 #outputbox {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 #outputbox .heading.stdin {

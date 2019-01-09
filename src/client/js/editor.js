@@ -66,32 +66,32 @@ function initShed(id) {
 
 
   var splitobj;
-  function makeSplit(dir) {
-    dir = dir || "horizontal";
-    if (splitobj) { splitobj.destroy(); }
+  function makeSplit() {
+    try { if (splitobj) { splitobj.destroy(); } } catch(e) {};
 
-    if (dir == "horizontal") {
-      $(".split-pane").css("float", "left");
-    } else {
-      $("#outputbox").css("width", "100%");
-      $(".split-pane").css("float", "none");
-    }
+    $(".split-pane").css("float", "left");
 
     splitobj = Split(["#editorbox","#outputbox"], {
       cursor: "col-resize",
-      gutterSize: 6,
-      direction: dir
+      gutterSize: 6
     });
   }
 
   var resize = _.debounce(function() {
     if (window.innerWidth < 768 ) {
-      makeSplit("vertical");
+      try { splitobj && splitobj.destroy(); } catch(e) {};
+      $("#outputbox").hide();
+      $("#editorbox").show();
+      $(".output-toggle").show().text("Output");
     } else {
-      makeSplit("horizontal");
+      // turn into horizontal mode.
+      // show button for toggling editor/output
+      makeSplit();
+      $("#outputbox, #editorbox").show();
+      $(".output-toggle").hide();
     }
   }, 200);
-  window.onresize = resize;
+  $(window).on("resize", resize);
 
   $(resize);
 
@@ -122,6 +122,20 @@ function initShed(id) {
   $(".run").click(function() {
     var stdin = $(".stdin-pane textarea").val();
     socket.emit("run", docId, stdin);
+  });
+
+  $(".output-toggle").on("click", function() {
+    console.log("EDITOR TOGGLE CLICKED");
+
+    $("#outputbox").toggle();
+    $("#editorbox").toggle();
+
+    if ($("#outputbox").is(":visible")) {
+      $(".output-toggle").text("Editor");
+    } else {
+      $(".output-toggle").text("Output");
+    }
+
   });
 
   $(function() {
