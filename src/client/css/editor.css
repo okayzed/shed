@@ -68,6 +68,36 @@ html, body, #page_content, .split-box, .editor-wrapper {
   width: 100%;
 }
 
+.light #outputbox {
+  background-color: #efefef;
+}
+
+.dark #outputbox {
+  background-color: #272822;
+  color: #f8f8f2;
+}
+
+.dark #outputbox .stdout-pane pre {
+  color: #f8f8f2;
+}
+
+.dark #outputbox .stdout-pane .card {
+  margin-top: 5px;
+  background-color: #2C3E50;
+  color: #f8f8f2;
+}
+
+#outputbox .card {
+  margin: 10px;
+  padding: 5px;
+}
+
+.dark #outputbox textarea {
+  background-color: #000;
+  color: #efefef;
+  overflow: hidden;
+}
+
 #outputbox .heading.stdin {
   cursor: pointer;
   text-decoration: underline;
@@ -76,6 +106,7 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 .heading {
   margin-left: 10px;
+  margin-top: 10px;
 }
 
 .split-pane {
@@ -85,12 +116,15 @@ html, body, #page_content, .split-box, .editor-wrapper {
 .stdin-pane {
   height: 25%;
   margin-top: 10px;
+  margin-bottom: 10px;
 
 }
 
 .stdin-pane textarea {
+  margin: 5px;
   padding: 10px;
   width: calc(100% - 10px);
+  margin-bottom: 10px;
   height: 100%;
   font-family: monospace;
 }
@@ -103,13 +137,12 @@ html, body, #page_content, .split-box, .editor-wrapper {
   flex: 1;
   height: 75%;
   overflow: auto;
-  background-color: #efefef;
 }
 
 .stdout-pane pre {
   overflow: auto;
-  max-height: 90%;
-  padding: 10px;
+  max-height: calc(100% - 20px);
+  padding: 5px;
   white-space: pre-wrap;
 }
 
@@ -156,7 +189,9 @@ html, body, #page_content, .split-box, .editor-wrapper {
  * SPLIT STYLING
  * from https://htmlpen.com/-a968ne5qd1/editor/
  */
-.gutter {background-color: transparent;background-repeat: no-repeat;background-position: 50%;}
+
+.gutter {background-color: #efefef; background-repeat: no-repeat;background-position: 50%;}
+.dark .gutter { background-color: #444; }
 .gutter.gutter-horizontal {cursor: col-resize;background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg=='); }
 .gutter.gutter-vertical {cursor: row-resize;background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII='); }
 .split.split-horizontal, .gutter.gutter-horizontal { height: 100%;float: left;}

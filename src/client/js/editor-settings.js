@@ -11,6 +11,13 @@ function setLang(mode) {
 
 function setTheme(mode) {
   cm.setOption("theme", mode);
+  if (mode == "monokai") {
+    $("body").addClass("dark");
+    $("body").removeClass("light");
+  } else {
+    $("body").addClass("light");
+    $("body").removeClass("dark");
+  }
 }
 
 function setIndent(amt) {

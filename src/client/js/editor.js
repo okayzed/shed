@@ -44,7 +44,7 @@ function initShed(id) {
   });
 
   socket.on("ran", function(stdout, stderr) {
-    var textEl = $("<div class='card card-body' />");
+    var textEl = $("<div class='card' />");
     textEl.text(stdout.join(""));
 
     var errEl = $("<div class='stderr'/>");
@@ -73,7 +73,7 @@ function initShed(id) {
 
     splitobj = Split(["#editorbox","#outputbox"], {
       cursor: "col-resize",
-      gutterSize: 6
+      gutterSize: 10
     });
   }
 
