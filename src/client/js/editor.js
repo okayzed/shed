@@ -9,6 +9,8 @@ function runCode() {
 function initShed(id) {
   docId = id;
 
+  cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true});
+
   // socket stuff
   var _dc = false;
   socket.on("disconnect", function() {
@@ -45,10 +47,10 @@ function initShed(id) {
 
   socket.on("ran", function(stdout, stderr) {
     var textEl = $("<div class='card' />");
-    textEl.text(stdout.join(""));
+    textEl.text(stdout.join("").trim());
 
     var errEl = $("<div class='stderr'/>");
-    errEl.text(stderr.join(""));
+    errEl.text(stderr.join("").trim());
 
     var pre = $(".stdout-pane pre");
     var top = pre.prop("scrollHeight");
@@ -73,7 +75,7 @@ function initShed(id) {
 
     splitobj = Split(["#editorbox","#outputbox"], {
       cursor: "col-resize",
-      gutterSize: 10
+      gutterSize: 6
     });
   }
 
@@ -151,8 +153,6 @@ function initShed(id) {
   });
 
   $(function() {
-    cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true});
-
     buildSettingsModal();
   });
 }
