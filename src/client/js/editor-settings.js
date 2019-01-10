@@ -14,6 +14,9 @@ function setTheme(mode) {
 }
 
 function setIndent(amt) {
+  try { amt = parseInt(amt, 10); }
+  catch(e) { amt = 4; }
+
   cm.setOption("indentUnit", amt);
 }
 
