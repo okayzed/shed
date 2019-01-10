@@ -80,9 +80,7 @@ function initShed(id) {
   var resize = _.debounce(function() {
     if (window.innerWidth < 768 ) {
       try { splitobj && splitobj.destroy(); } catch(e) {};
-      $("#outputbox").hide();
-      $("#editorbox").show();
-      $(".output-toggle").show().text("Output");
+      sync_editor();
     } else {
       // turn into horizontal mode.
       // show button for toggling editor/output
@@ -124,15 +122,32 @@ function initShed(id) {
     socket.emit("run", docId, stdin);
   });
 
-  $(".output-toggle").on("click", function() {
-    $("#outputbox").toggle();
-    $("#editorbox").toggle();
+  var showingEditor = true;
+  function show_output() {
+    $("#outputbox").show();
+    $("#editorbox").hide();
+    $(".output-toggle").text("Editor");
+  }
 
-    if ($("#outputbox").is(":visible")) {
-      $(".output-toggle").text("Editor");
+  function show_editor() {
+    $("#editorbox").show();
+    $("#outputbox").hide();
+    $(".output-toggle").text("Output");
+  }
+
+  function sync_editor() {
+    $(".output-toggle").show();
+
+    if (showingEditor) {
+      show_editor();
     } else {
-      $(".output-toggle").text("Output");
+      show_output();
     }
+  }
+
+  $(".output-toggle").on("click", function() {
+    showingEditor = !showingEditor;
+    sync_editor();
   });
 
   $(function() {
