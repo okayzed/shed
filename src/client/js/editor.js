@@ -75,7 +75,8 @@ function initShed(id) {
 
     splitobj = Split(["#editorbox","#outputbox"], {
       cursor: "col-resize",
-      gutterSize: 6
+      gutterSize: 6,
+      minSize: 0
     });
   }
 
