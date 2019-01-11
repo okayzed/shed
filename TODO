@@ -17,15 +17,15 @@
 
 * add a favicon
 * style bottom bar to have dedicated space and adjust height of panes to calc(100% - statusbar)
-* add mobile friendly UI
 * color stderr lines red (change server.js and client.js to do so)
-* settings for auto close brackets
 * settings for auto complete
 * settings for font size
-
+* collapse output over X lines with a toggler for expanding
 
 ## done
 
+x settings for auto close brackets
+x add mobile friendly UI
 x add settings UI (currently use ctrl-, to get to settings pane from ace, but we only need a subset of settings: keybindings, auto close brackets, tab spacings, color scheme, font size)
 x sync stdin between users
 x add a welcome page
