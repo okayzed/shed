@@ -22,7 +22,8 @@ function randid() {
 }
 
 app.get('/', function(req, res) {
-  res.render('welcome.html', {});
+  var name = process.env.NAME || "";
+  res.render('welcome.html', { name: name});
 });
 
 app.get('/new', function(req, res) {
@@ -93,7 +94,6 @@ io.on('connection', function(socket) {
 
   socket.on("run", function(room, stdin) {
     getDoc(room, function(doc) {
-      console.log("RUNNING", room);
       runDoc(room, doc, stdin, socket);
     });
   });
@@ -102,7 +102,6 @@ io.on('connection', function(socket) {
     var room = _room;
     socket.broadcast.in(room).emit("set_language", lang);
     getDoc(room, function(doc) {
-      console.log("SET FILETYPE", lang);
       doc.filetype = lang;
       doc.save();
     });
