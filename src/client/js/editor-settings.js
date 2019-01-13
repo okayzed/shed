@@ -4,6 +4,10 @@ function setLang(mode) {
     langEl.val(mode);
   }
 
+  if (mode == "okp") {
+    mode = "python";
+  }
+
   var md = CodeMirror.findModeByName(mode);
   if (md) {
     cm.setOption("mode", md.mime);

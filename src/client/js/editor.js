@@ -1,4 +1,4 @@
-var socket = io()
+var socket;
 var docId;
 var cm;
 
@@ -7,6 +7,7 @@ function runCode() {
 }
 
 function initShed(id) {
+  socket = io();
   docId = id;
 
   cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true});
