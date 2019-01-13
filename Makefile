@@ -7,7 +7,7 @@ deps:
 		npm install
 
 docker-image:
-		docker -t shed/runner .
+		docker build -t shed/runner .
 
 OT_FILES = text-operation.js selection.js wrapped-operation.js undo-manager.js client.js codemirror-adapter.js socketio-adapter.js ajax-adapter.js editor-client.js
 OT_DEPS = $(patsubst %, src/ot.js/%, $(OT_FILES))

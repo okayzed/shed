@@ -465,6 +465,19 @@ html, body, #page_content, .split-box, .editor-wrapper {
   color: #f8f8f2;
 }
 
+#outputbox .stdout-pane .card.collapsed {
+  max-height: 200px;
+  overflow-y: hidden;
+}
+
+#outputbox .stdout-pane .card .expander {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+
+
 #outputbox .card {
   margin: 10px;
   padding: 5px;

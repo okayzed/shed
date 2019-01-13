@@ -45,9 +45,36 @@ function initShed(id) {
     stdinEl.val(stdin);
   });
 
+  function countNewlines(t) {
+    l = 0;
+    for (var c in t) { if (t[c] == "\n") { l++; } }
+    return l;
+  }
+
   socket.on("ran", function(stdout, stderr) {
     var textEl = $("<div class='card' />");
-    textEl.text(stdout.join("").trim());
+    var txt = stdout.join("").trim();
+
+    textEl.text(txt);
+    if (txt.length > 500 || countNewlines(txt) > 30) {
+      var prp = $("<a class='expander' href='#'>Expand</a>");
+      var tgl = false;
+      prp.on("click", function(e) {
+        tgl = !tgl;
+        e.preventDefault();
+
+        if (tgl) {
+          textEl.removeClass("collapsed");
+          prp.text("Collapse");
+        } else {
+          textEl.addClass("collapsed");
+          prp.text("Expand");
+        }
+      });
+      textEl.addClass("collapsed");
+      textEl.prepend(prp);
+    }
+
 
     var errEl = $("<div class='stderr'/>");
     errEl.text(stderr.join("").trim());

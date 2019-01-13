@@ -5,8 +5,12 @@ function setLang(mode) {
   }
 
   var md = CodeMirror.findModeByName(mode);
-  cm.setOption("mode", md.mime);
-  CodeMirror.autoLoadMode(cm, md.mode);
+  if (md) {
+    cm.setOption("mode", md.mime);
+    CodeMirror.autoLoadMode(cm, md.mode);
+  } else {
+    console.log("CAN NOT FIND MODE", mode);
+  }
 }
 
 function setTheme(mode) {
