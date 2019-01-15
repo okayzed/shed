@@ -2,6 +2,8 @@ var socket;
 var docId;
 var cm;
 
+var _unseen_count = 0;
+
 function runCode() {
   socket.emit("run", docId);
 }
@@ -39,6 +41,7 @@ function initShed(id) {
     var pre = $(".stdout-pane pre")
       .append(output);
     pre.scrollTop(pre.prop("scrollHeight"));
+    update_toggle_count(1);
   });
 
   socket.on("stdin", function(stdin) {
@@ -57,6 +60,7 @@ function initShed(id) {
     var txt = stdout.join("").trim();
 
     textEl.text(txt);
+    update_toggle_count(1);
     if (txt.length > 500 || countNewlines(txt) > 30) {
       var prp = $("<a class='expander' href='#'>Expand</a>");
       var tgl = false;
@@ -157,13 +161,30 @@ function initShed(id) {
   function show_output() {
     $("#outputbox").show();
     $("#editorbox").hide();
+
     $(".output-toggle").text("Editor");
+    reset_toggle_count();
   }
 
   function show_editor() {
     $("#editorbox").show();
     $("#outputbox").hide();
     $(".output-toggle").text("Output");
+  }
+
+  function update_toggle_count(count) {
+    _unseen_count += count;
+    if (showingEditor && _unseen_count) {
+      $(".output-toggle").text("Output (" + _unseen_count + ")");
+    }
+  }
+
+  function reset_toggle_count() {
+    _unseen_count = 0;
+    if (showingEditor) {
+      $(".output-toggle").text("Output");
+    }
+
   }
 
   function sync_editor() {
