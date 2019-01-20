@@ -12,7 +12,10 @@ function initShed(id) {
   socket = io();
   docId = id;
 
-  cm = CodeMirror.fromTextArea(document.getElementById("note"), {lineNumbers: true});
+  cm = CodeMirror.fromTextArea(document.getElementById("note"), {
+    lineNumbers: true,
+    matchBrackets: true
+  });
 
   // socket stuff
   var _dc = false;
