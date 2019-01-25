@@ -1,7 +1,10 @@
 # shed.ot
 
-based on https://github.com/YingshanDeng/ot.js-demo, its a shared codepad
-with code runner (using docker)
+shed is a self-hosted shared editor + code runner
+
+## Demo
+
+To see a demo, please visit https://code.algorithm.city
 
 ## Development
 
@@ -12,6 +15,11 @@ npm start
 ```
 
 If you change assets, be sure to run `make` and restart the server.
+
+## Credits
+
+based on https://github.com/YingshanDeng/ot.js-demo, shed uses ot.js,
+codemirror and docker to run code.
 
 ## License
 
