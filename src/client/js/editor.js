@@ -12,9 +12,19 @@ function initShed(id) {
   socket = io();
   docId = id;
 
+  var mac = CodeMirror.keyMap["default"] == CodeMirror.keyMap.macDefault;
+
+  var extraKeys = {
+    "Ctrl-C": function (cm) {
+        if (!mac && cm.getOption('keyMap').substr(0, 3) === 'vim') document.execCommand("copy");
+        else return CodeMirror.Pass;
+    }
+  };
+
   cm = CodeMirror.fromTextArea(document.getElementById("note"), {
     lineNumbers: true,
-    matchBrackets: true
+    matchBrackets: true,
+    extraKeys: extraKeys
   });
 
   // socket stuff
