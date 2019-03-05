@@ -100,6 +100,19 @@ function runDoc(room, doc, stdin, socket) {
 
 }
 
+var REPLAY_ROOM = "xx:REPLAYS:xx";
+function runReplay(code, filetype, stdin, socket) {
+  socket.emit("output", "> Running...\n")
+  if (filetype == "okp") {
+    compileOkp(code, function(code) {
+      runCode(REPLAY_ROOM, code, "cpp", stdin, socket);
+    });
+  } else {
+    runCode(REPLAY_ROOM, code, filetype, stdin, socket);
+  }
+}
+
 module.exports = {
-  runDoc: runDoc
+  runDoc: runDoc,
+  runReplay: runReplay
 }

@@ -11,6 +11,7 @@
   <script src="/js/ot.js"> </script>
   <script src="/js/socket.io.js"> </script>
   <script src="/js/codemirror.js"></script>
+  <script src="/js/replay.js"></script>
   <script src="/js/editor.js"></script>
   <script src="/js/editor-settings.js"></script>
   <script src="/js/bootstrap.min.js"></script>
@@ -37,7 +38,7 @@
         <div class="clearfix mbl toolbar">
           <a type="button" class='btn btn-primary mrl' href="/new">New Paste</a>
 
-          <span class="">
+          <span class="mrl" style='margin-right: 15px;'>
             <select class="language">
               <option value=""></option>
               <option value="javascript">javascript</option>
@@ -48,7 +49,7 @@
             </select>
           </span>
 
-          <div type="button" class="run btn btn-info">Run</div>
+          <div type="button" class="run-replay btn btn-info">Run</div>
 
         </div>
 
@@ -58,6 +59,14 @@
         <div type="button" class="btn btn-primary settings"
           data-toggle="modal" data-target="#settingsModal">
           Settings
+        </div>
+        <div class='replaycontrols'>
+          <div class='btn play'>Play</div>
+          <div class="btn scrubber">
+            <input type="range" min="-1" max="10" value="5" class="slider">
+          </div>
+          <span class='btn time'> </span>
+
         </div>
       </div>
 
@@ -73,13 +82,13 @@
         </div>
         <div class='stdout-pane stdout'>
         <pre></pre> </div>
-      </div>
+
     </div>
 
   </div>
 
   <script>
-    initShed("<%= docId %>");
+    initShed("<%= docId %>", true /* replayMode */);
   </script>
 
   <%- include partials/settings.html %>

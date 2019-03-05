@@ -78,6 +78,7 @@ EditorSocketIOServer.prototype.onOperation = function (socket, revision, operati
     return;
   }
 
+
   try {
     var clientId = socket.id;
     var wrappedPrime = this.receiveOperation(revision, wrapped);
@@ -92,6 +93,7 @@ EditorSocketIOServer.prototype.onOperation = function (socket, revision, operati
   }
 
   this.emit("changed", this.document);
+  this.emit("operation", wrappedPrime);
 
 };
 
@@ -103,6 +105,7 @@ EditorSocketIOServer.prototype.updateSelection = function (socket, selection) {
     delete this.getClient(clientId).selection;
   }
   socket.broadcast['in'](this.docId).emit('selection', clientId, selection);
+  this.emit("selection", clientId, selection);
 };
 
 EditorSocketIOServer.prototype.setName = function (socket, name) {

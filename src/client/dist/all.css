@@ -537,6 +537,24 @@ html, body, #page_content, .split-box, .editor-wrapper {
   white-space: pre-wrap;
 }
 
+/* REPLAY CONTROLS */
+.replaycontrols {
+  z-index: 10;
+}
+
+#editorbox .replaycontrols {
+  background: black;
+  padding: 5px;
+}
+
+#editorbox .replaycontrols, #editorbox .replaycontrols .btn {
+  color: white;
+}
+
+.replaycontrols .time {
+  width: 100px;
+}
+
 /* TOOLBAR */
 .toolbar {
   position: absolute;
@@ -566,6 +584,12 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 
 .settings {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+
+.replaycontrols {
   position: absolute;
   bottom: 10px;
   right: 20px;

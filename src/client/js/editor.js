@@ -8,7 +8,8 @@ function runCode() {
   socket.emit("run", docId);
 }
 
-function initShed(id) {
+
+function initShed(id, replayMode) {
   socket = io();
   docId = id;
 
@@ -37,7 +38,21 @@ function initShed(id) {
   socket.on('connect', function() {
     console.log("SOCKET CONNECTED");
     if (_dc) { window.location.reload(); }
-    socket.emit("join", docId);
+
+    if (!replayMode) {
+      socket.emit("join", docId);
+    } else {
+      installReplayControls();
+
+      socket.emit("replay", docId);
+      socket.emit("get_language", docId);
+      socket.on("replay", function(ch, lang) {
+        PLAY_FRAMES = ch.concat(null);
+        cm.options.readOnly = true;
+        replayChanges();
+        fastPlayBack();
+      });
+    }
   });
 
   socket.on("doc", function(data) {
@@ -45,9 +60,11 @@ function initShed(id) {
 
     cm.setOption("lineWrapping", true);
 
-    var serverAdapter = new ot.SocketIOAdapter(socket);
-    var editorAdapter = new ot.CodeMirrorAdapter(cm);
-    var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
+    if (!replayMode) {
+      var serverAdapter = new ot.SocketIOAdapter(socket);
+      var editorAdapter = new ot.CodeMirrorAdapter(cm);
+      var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
+    }
   });
 
   socket.on("output", function(output) {
@@ -168,6 +185,13 @@ function initShed(id) {
   $(".run").click(function() {
     var stdin = $(".stdin-pane textarea").val();
     socket.emit("run", docId, stdin);
+  });
+
+  $(".run-replay").click(function() {
+    var stdin = $(".stdin-pane textarea").val();
+    var code = cm.getValue();
+    var lang = $(".language").val();
+    socket.emit("runReplay", code, lang, stdin);
   });
 
   var showingEditor = true;
