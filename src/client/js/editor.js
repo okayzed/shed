@@ -25,8 +25,25 @@ function initShed(id, replayMode) {
   cm = CodeMirror.fromTextArea(document.getElementById("note"), {
     lineNumbers: true,
     matchBrackets: true,
-    extraKeys: extraKeys
+    extraKeys: extraKeys,
+    hintOptions: {
+      completeSingle: false
+    }
   });
+  cm.on("inputRead", function(instance) {
+      if (!cm.options.autoComplete) {
+        return;
+      }
+      if (instance.state.completionActive) {
+              return;
+      }
+      var cur = instance.getCursor();
+      var token = instance.getTokenAt(cur);
+      if (token.type && token.type != "comment") {
+              CodeMirror.commands.autocomplete(instance);
+      }
+  });
+
 
   // socket stuff
   var _dc = false;

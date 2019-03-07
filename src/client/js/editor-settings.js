@@ -43,12 +43,16 @@ function setKeymap(mode) {
   cm.setOption("keyMap", mode);
 }
 
+function setAutoComplete(f) {
+  cm.setOption("autoComplete", !!f);
+}
 
 var DEFAULT_SETTINGS = {
   colorscheme: "default",
   keymap: "default",
   indent: "4",
-  autoCloseBrackets: true
+  autoCloseBrackets: true,
+  autoComplete: false
 };
 function makeSettingsRow(options) {
   var settingsStr = localStorage.settings;
@@ -114,6 +118,10 @@ function setSettings(options) {
     anyChange = true;
   }
 
+  if (options.autoComplete != prevSettings.autoComplete) {
+    setAutoComplete(options.autoComplete);
+    anyChange = true;
+  }
 
   if (anyChange) {
     localStorage.settings = JSON.stringify(options);
@@ -167,6 +175,15 @@ function buildSettingsModal() {
     {
       name: "autoCloseBrackets",
       text: "Auto Close Brackets",
+      options: {
+        "Enabled": "true",
+        // we use empty string as falsey bc it can store on the DOM properly
+        "Disabled": ""
+      }
+    },
+    {
+      name: "autoComplete",
+      text: "Auto Complete Words",
       options: {
         "Enabled": "true",
         // we use empty string as falsey bc it can store on the DOM properly
