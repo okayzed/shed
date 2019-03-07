@@ -8,6 +8,7 @@ var runDoc = require("./runner").runDoc;
 var runReplay = require("./runner").runReplay;
 var Post = require("./models").Post;
 var PostOp = require("./models").PostOp;
+var getPostOps = require("./models").getPostOps;
 var path = require('path');
 var ejs = require('ejs');
 
@@ -91,13 +92,6 @@ function getDoc(randid, cb) {
   });
 }
 
-function getChanges(randid, cb) {
-  PostOp.findAll({ where: { randid: randid }}).then(function(changes) {
-    cb(changes);
-  });
-
-}
-
 function addChange(randid, operation, cb) {
   PostOp.create({ randid: randid, change: operation });
 }
@@ -153,7 +147,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on("replay", function(room) {
-    getChanges(room, function(changes) {
+    getPostOps(room, function(changes) {
       socket.emit("replay", changes);
     });
   });

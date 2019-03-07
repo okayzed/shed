@@ -43,6 +43,13 @@ var PostOp = replaydb.define('PostOp', {
 
 });
 
+var PostOpBlob = replaydb.define('PostOpBlob', {
+  randid: { type: Sequelize.STRING, unique: true },
+  changes: Sequelize.BLOB,
+  indexes: [ {
+    fields: ['randid']
+  }],
+});
 
 var force_reset = process.env.RESET;
 sequelize.sync({ force: force_reset }).then(function() {
@@ -52,7 +59,51 @@ replaydb.sync({ force: force_reset }).then(function() {
   console.log("Synced SQL ReplayDB to models");
 });
 
+
+var zlib = require("zlib");
+function getPostOps(randid, cb) {
+  PostOp.findAll({where: { randid: randid}}).then(function(changes) {
+    PostOpBlob.findOrCreate({where: {randid: randid}}).then(function(blobs) {
+      var blob = blobs[0];
+
+      var blobChanges = [];
+      if (blob.changes) {
+        blobChanges = JSON.parse(zlib.gunzipSync(blob.changes));
+      }
+
+      var dirty = false;
+      for (var c in changes) {
+        var change = changes[c];
+        blobChanges.push(change.toJSON());
+        change.destroy();
+        dirty = true;
+      }
+
+      for (var c in blobChanges) {
+        var change = blobChanges[c];
+        if (change.updated_at) {
+          delete change.updated_at;
+          dirty = true;
+        }
+
+        if (change.randid) {
+          delete change.randid;
+          dirty = true;
+        }
+      }
+
+      cb(blobChanges);
+
+      if (dirty) {
+        blob.changes = zlib.gzipSync(JSON.stringify(blobChanges));
+        blob.save();
+      }
+    });
+  });
+}
+
 // all models defined need to be required somewhere before the main setup is called
 module.exports.instance = sequelize;
 module.exports.Post = Post;
 module.exports.PostOp = PostOp;
+module.exports.getPostOps = getPostOps;

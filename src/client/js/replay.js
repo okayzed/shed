@@ -1,3 +1,69 @@
+if (typeof ot === 'undefined') {
+  var ot = {};
+}
+
+ot.ReplayClient = (function (global) {
+  'use strict';
+
+  // Constructor. Takes the current document as a string and optionally the array
+  // of all operations.
+  function ReplayClient (document, operations) {
+    this.document = document;
+    this.documents = [document];
+    this.index = 0;
+    this.operations = operations || [];
+    this.cm = null;
+  }
+
+  ReplayClient.prototype.redraw = _.throttle(function() {
+    var scrollInfo = this.cm.getScrollInfo();
+    this.cm.setValue(this.document);
+    this.cm.scrollTo(scrollInfo.left, scrollInfo.top);
+  }, 100, { leading: true, trailing: true });
+
+  // Call this method whenever you receive an operation from a client.
+  ReplayClient.prototype.receiveOperation = function (revision, operation) {
+    if (revision < 0 || this.operations.length < revision) {
+      throw new Error("operation revision not in history");
+    }
+    // Find all operations that the client didn't know of when it sent the
+    // operation ...
+    var concurrentOperations = this.operations.slice(revision);
+
+    // ... and transform the operation against all these operations ...
+    var transform = operation.constructor.transform;
+    for (var i = 0; i < concurrentOperations.length; i++) {
+      operation = transform(operation, concurrentOperations[i])[0];
+    }
+
+    // ... and apply that on the document.
+    this.document = operation.apply(this.document);
+    this.documents.push(this.document);
+    this.index++;
+    // Store operation in history.
+    this.operations.push(operation);
+
+    // It's the caller's responsibility to send the operation to all connected
+    // clients and an acknowledgement to the creator.
+    return operation;
+  };
+
+  // Call this method whenever you receive an operation from a client.
+  ReplayClient.prototype.undo = function () {
+    this.index--;
+    this.document = this.documents[this.index];
+    this.redraw();
+  };
+
+  ReplayClient.prototype.redo = function() {
+    this.index++;
+    this.document = this.documents[this.index];
+    this.redraw();
+  }
+
+  return ReplayClient;
+
+}(this));
 
 function updateTimer() {
   var cStart = new Date(PLAY_FRAMES[0].created_at);
@@ -39,7 +105,7 @@ function setPlayButton() {
 function installReplayControls() {
   function reset() {
     while (PLAY_FRAME > 0) {
-      CodeMirror.prototype.undo.call(cm);
+      PLAY_CLIENT.undo();
       PLAY_FRAME--;
     }
     PLAY_FRAME = 0;
@@ -76,21 +142,18 @@ function installReplayControls() {
     setPlayButton();
 
     while (spot > PLAY_FRAME) {
-      CodeMirror.prototype.redo.call(cm);
+      PLAY_CLIENT.redo();
       PLAY_FRAME++;
 
     }
 
     while (spot < PLAY_FRAME) {
-      CodeMirror.prototype.undo.call(cm);
+      PLAY_CLIENT.undo();
       PLAY_FRAME--;
     }
 
     updateTimer();
   });
-
-
-
 }
 
 var PLAY_HANDLE;
@@ -106,14 +169,13 @@ function replayChanges() {
     return;
   }
 
+  var server = new ot.ReplayClient("", []);
+
   var scrubber = $(".replaycontrols .scrubber input");
   scrubber.attr("max", PLAY_FRAMES.length);
   scrubber.attr("min", 1);
-  var adapter = new ot.SocketIOAdapter(socket);
-  var editor = new ot.CodeMirrorAdapter(cm);
-  var client = new ot.EditorClient(0, [], adapter, editor)
-  cm.undoDepth = PLAY_FRAMES.length;
-  PLAY_CLIENT = client;
+  PLAY_CLIENT = server;
+  PLAY_CLIENT.cm = cm;
 
   var cStart = new Date(PLAY_FRAMES[0].created_at);
   for (var i = 0; i < PLAY_FRAMES.length; i++) {
@@ -122,7 +184,8 @@ function replayChanges() {
       continue;
     }
     if (op.change.type == "op") {
-      adapter.trigger("operation", op.change.wrapped, op.change.meta);
+      var wrappedOp = ot.TextOperation.fromJSON(op.change.wrapped);
+      server.receiveOperation(i, wrappedOp);
       updateTimer()
     } else if (op.change.type == "sel") {
 //      SELECTION NOT USED
@@ -133,6 +196,7 @@ function replayChanges() {
   PLAY_FRAME = PLAY_FRAMES.length;
   scrubber.val(PLAY_FRAMES.length);
   updateTimer();
+  cm.setValue(server.document);
 }
 
 function fastPlayBack(cli) {
@@ -150,7 +214,7 @@ function fastPlayBack(cli) {
 
       if (PLAY_STATE == 'rewind') {
         if (PLAY_FRAME > 0) {
-          CodeMirror.prototype.undo.call(cm);
+          PLAY_CLIENT.undo();
 
           PLAY_FRAME--;
           if (PLAY_FRAME < PLAY_FRAMES.length && PLAY_FRAME >= 0) {
@@ -171,7 +235,7 @@ function fastPlayBack(cli) {
         return;
       }
 
-      CodeMirror.prototype.redo.call(cm);
+      PLAY_CLIENT.redo();
 
       updateTimer()
 
