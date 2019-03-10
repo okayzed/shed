@@ -72,6 +72,10 @@ function getRoom(room, cb) {
     });
 
     server.on("operation", function(op) {
+      if (!op) {
+        return;
+      }
+
       op.type = "op";
       addChange(room, op);
     });

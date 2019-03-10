@@ -54,8 +54,6 @@ function initShed(id, replayMode) {
 
   socket.on('connect', function() {
     console.log("SOCKET CONNECTED");
-    if (_dc) { window.location.reload(); }
-
     if (!replayMode) {
       socket.emit("join", docId);
     } else {
@@ -73,15 +71,26 @@ function initShed(id, replayMode) {
     }
   });
 
+  var serverAdapter, editorAdapter, client;
   socket.on("doc", function(data) {
-    cm.setValue(data.str)
-
-    cm.setOption("lineWrapping", true);
-
     if (!replayMode) {
-      var serverAdapter = new ot.SocketIOAdapter(socket);
-      var editorAdapter = new ot.CodeMirrorAdapter(cm);
-      var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
+      if (editorAdapter) {
+        editorAdapter.callbacks = {};
+        editorAdapter.detach();
+      }
+
+      if (serverAdapter) {
+        serverAdapter.callbacks = {};
+      }
+
+      var cursor = cm.getCursor();
+      cm.setValue(data.str)
+      cm.setCursor(cursor);
+      cm.setOption("lineWrapping", true);
+
+      serverAdapter = new ot.SocketIOAdapter(socket);
+      editorAdapter = new ot.CodeMirrorAdapter(cm);
+      client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
     }
   });
 

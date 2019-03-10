@@ -14,6 +14,7 @@ ot.Server = (function (global) {
 
   // Call this method whenever you receive an operation from a client.
   Server.prototype.receiveOperation = function (revision, operation) {
+
     if (revision < 0 || this.operations.length < revision) {
       throw new Error("operation revision not in history");
     }
