@@ -205,6 +205,13 @@ html, body, #page_content, .split-box, .editor-wrapper {
 }
 
 
+.btn.replay {
+  position: absolute;
+  bottom: 10px;
+  right: 110px;
+  z-index: 10;
+}
+
 .settings {
   position: absolute;
   bottom: 10px;

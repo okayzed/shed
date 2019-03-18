@@ -64,6 +64,7 @@ function initShed(id, replayMode) {
       socket.emit("replay", docId);
       socket.emit("get_language", docId);
       socket.on("replay", function(ch, lang) {
+        $(".play.btn").text("Play");
         PLAY_FRAMES = ch.concat(null);
         cm.options.readOnly = true;
         replayChanges();
