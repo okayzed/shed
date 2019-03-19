@@ -159,12 +159,21 @@ function initShed(id, replayMode) {
   var splitobj;
   function makeSplit() {
     try { if (splitobj) { splitobj.destroy(); } } catch(e) {};
+    var sizes = [50, 50];
+    if (window.localStorage) {
+      sizes = localStorage.getItem('split-sizes') || [50, 50];
+      if(typeof sizes === 'string') sizes= sizes.split(",").map(Number);
+    }
 
     $(".split-pane").css("float", "left");
 
     splitobj = Split(["#editorbox","#outputbox"], {
       cursor: "col-resize",
       gutterSize: 6,
+      sizes: sizes,
+      onDragEnd: function () {
+          window.localStorage && localStorage.setItem('split-sizes', splitobj.getSizes());
+      },
       minSize: 0
     });
   }

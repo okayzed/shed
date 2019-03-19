@@ -412,7 +412,13 @@ li.CodeMirror-hint-active {
   background: #08f;
   color: white;
 }
-body, html {
+.postlink {
+  display: block;
+  border: 1px dotted gray;
+  padding: 5px;
+}
+
+body.max, html.max {
   height: 100%;
   padding: 0px;
   margin: 0px;

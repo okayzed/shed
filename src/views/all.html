@@ -1,0 +1,71 @@
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>shed.ot</title>
+
+  <link rel="stylesheet" href="/dist/all.css">
+
+  <script src="/js/jquery-3.3.1.js"> </script>
+  <script src="/js/underscore-min.js"> </script>
+  <script src="/js/jquery.timeago.js"> </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <style>
+    .postlink {
+      border: 1px dotted gray;
+      padding: 5px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .postlink .preview {
+      color: gray;
+      font-family: monospace;
+    }
+
+    .postlink:hover {
+      background-color: #ffe;
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <div class='container'>
+    <div class='posts'>
+      <% for (var i in posts) {
+        var post = posts[i] %>
+          <% if (post.text.length == 0) { continue; } %>
+
+          <div class='postlink clearfix'>
+            <a href='/p/<%= post.randid %>'><%= post.randid %></a>
+            <span>(<%= post.text.length %> chars)</span>
+            <br />
+            updated: <time class='timeago' datetime='<%= post.updated_at.toISOString() %>'></time>
+            <br />
+            created: <time class='timeago' datetime='<%= post.created_at.toISOString() %>'></time>
+            <br />
+
+            <pre class='preview'><%= post.text.substring(0, 180) %></pre>
+
+          </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    $(function() {
+      $(".timeago").timeago();
+
+      $(".postlink").on("click", function(e) {
+        var href = $(e.target).find("a").attr('href');
+        window.location = href;
+      });
+    });
+  </script>
+
+</body>
+</html>
