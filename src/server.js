@@ -16,6 +16,11 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', ejs.renderFile);
 
+var auth = require('http-auth');
+var basic = auth.basic({
+    realm: "Shed Protected Area",
+    file: __dirname + "/../users.htpasswd"
+});
 
 
 
@@ -29,9 +34,7 @@ app.get('/', function(req, res) {
   res.render('welcome.html', { name: name});
 });
 
-app.get('/all', function(req, res) {
-  var name = process.env.NAME || "";
-
+app.get('/all', auth.connect(basic), function(req, res) {
   Post.findAll().then(function(posts) {
     posts.reverse()
     res.render('all.html', {posts: posts});
