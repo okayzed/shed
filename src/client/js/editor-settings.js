@@ -8,6 +8,11 @@ function setLang(mode) {
     mode = "python";
   }
 
+  if (mode == "python2" || mode == "python3") {
+    mode = "python"
+  }
+
+
   var md = CodeMirror.findModeByName(mode);
   if (md) {
     cm.setOption("mode", md.mime);
