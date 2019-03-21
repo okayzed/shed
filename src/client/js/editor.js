@@ -30,6 +30,31 @@ function initShed(id, replayMode) {
       completeSingle: false
     }
   });
+
+  function is_whitespace(c) {
+    return (c == ' ' || c == '\t' || c == '\n');
+  }
+
+  cm.on("change", function() {
+    var t = cm.getValue();
+    var is = 0, charcnt = 0, wordcnt = 0;
+    for (var i = 0; i < t.length; i++) {
+      if (!is_whitespace(t.charAt(i))) {
+        charcnt++;
+        is = 1;
+      }
+      if (is && is_whitespace(t.charAt(i))) {
+        is = 0;
+        wordcnt++;
+      }
+    }
+
+    wordcnt += is;
+
+    $(".wordcount").text("chars: " + charcnt + " words: " + wordcnt);
+
+  })
+
   cm.on("inputRead", function(instance) {
       if (!cm.options.autoComplete) {
         return;

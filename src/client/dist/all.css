@@ -412,12 +412,6 @@ li.CodeMirror-hint-active {
   background: #08f;
   color: white;
 }
-.postlink {
-  display: block;
-  border: 1px dotted gray;
-  padding: 5px;
-}
-
 body.max, html.max {
   height: 100%;
   padding: 0px;
@@ -624,6 +618,19 @@ html, body, #page_content, .split-box, .editor-wrapper {
     box-sizing:border-box;
 }
 
+.wordcount {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 10;
+  background-color: white;
+  opacity: 0.3;
+}
+
+.wordcount:hover {
+  opacity: 1;
+}
 
 .btn.replay {
   position: absolute;
