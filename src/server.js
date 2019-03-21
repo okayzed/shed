@@ -16,13 +16,20 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', ejs.renderFile);
 
+var path = __dirname + "/../users.htpasswd"
+try {
+  if (!fs.existsSync(path)) {
+    // touch users.htpasswd
+    console.log("Creating blank users.htpasswd");
+    fs.closeSync(fs.openSync(path, 'w'));
+  }
+} catch(err) { }
+
 var auth = require('http-auth');
 var basic = auth.basic({
     realm: "Shed Protected Area",
-    file: __dirname + "/../users.htpasswd"
+    file: path
 });
-
-
 
 function randid() {
   var i = parseInt(Math.random() * 1e9+7)
