@@ -38,17 +38,7 @@
         <div class="clearfix mbl toolbar">
           <a type="button" class='btn btn-primary mrl' href="/new">New Paste</a>
 
-          <span class="mrl" style='margin-right: 15px;'>
-            <select class="language">
-              <option value=""></option>
-              <option value="javascript">javascript</option>
-              <option value="ruby">ruby</option>
-              <option value="cpp">cpp</option>
-              <option value="python">python</option>
-              <option value="okp">cpy</option>
-            </select>
-          </span>
-
+          <%- include partials/languages.html %>
           <div type="button" class="run-replay btn btn-info">Run</div>
 
         </div>
