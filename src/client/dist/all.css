@@ -479,6 +479,7 @@ html, body, #page_content, .split-box, .editor-wrapper {
 #outputbox {
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 100%;
 }
 
@@ -622,9 +623,9 @@ html, body, #page_content, .split-box, .editor-wrapper {
   position: absolute;
   bottom: 0px;
   left: 0px;
+  padding-left: 5px;
   right: 0px;
   z-index: 10;
-  background-color: white;
   opacity: 0.3;
 }
 
