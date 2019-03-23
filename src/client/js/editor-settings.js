@@ -52,12 +52,21 @@ function setAutoComplete(f) {
   cm.setOption("autoComplete", !!f);
 }
 
+function showWordCount(v) {
+  if (v) {
+    $(".wordcount").show();
+  } else {
+    $(".wordcount").hide();
+  }
+}
+
 var DEFAULT_SETTINGS = {
   colorscheme: "default",
   keymap: "default",
   indent: "4",
   autoCloseBrackets: true,
-  autoComplete: false
+  autoComplete: false,
+  showWordCount: false
 };
 function makeSettingsRow(options) {
   var settingsStr = localStorage.settings;
@@ -128,6 +137,11 @@ function setSettings(options) {
     anyChange = true;
   }
 
+  if (options.showWordCount != prevSettings.showWordCount) {
+    showWordCount(options.showWordCount);
+    anyChange = true;
+  }
+
   if (anyChange) {
     localStorage.settings = JSON.stringify(options);
   }
@@ -193,6 +207,14 @@ function buildSettingsModal() {
         "Enabled": "true",
         // we use empty string as falsey bc it can store on the DOM properly
         "Disabled": ""
+      }
+    },
+    {
+      name: "showWordCount",
+      text: "Show word and character count",
+      options: {
+        "Enabled": "true",
+        "Disabled" : ""
       }
     }
   ];
