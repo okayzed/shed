@@ -35,11 +35,8 @@
       <div class="split-pane active" id="editorbox">
 
         <div class="clearfix mbl toolbar">
-          <a type="button" class='btn btn-primary mrl' href="/new">New Paste</a>
 
           <%- include partials/languages.html %>
-          <div type="button" class="run btn btn-info">Run</div>
-
         </div>
 
         <div class='wordcount'> </div>
@@ -47,14 +44,10 @@
         <textarea id="note" style="display: none"></textarea>
 
 
-        <a type="button" class='btn btn-primary mrl replay' href="/r/<%= docId %>">Watch Replay</a>
-        <div type="button" class="btn btn-primary settings"
-          data-toggle="modal" data-target="#settingsModal">
-          Settings
-        </div>
       </div>
 
       <div class="split-pane clearfix fd" id="outputbox">
+        <%- include partials/bottombar.html %>
         <div class='stdin-pane pane third collapse'>
           <textarea ></textarea>
         </div>

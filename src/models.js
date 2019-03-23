@@ -136,7 +136,8 @@ function packPostOps() {
     });
 }
 
-setInterval(packPostOps, 5 * 60 * 1000); // every 5 minutes we pack
+// we re-pack every 12 hours or so
+setInterval(packPostOps, 12 * 60 * 60 * 1000); 
 
 // all models defined need to be required somewhere before the main setup is called
 module.exports.instance = sequelize;

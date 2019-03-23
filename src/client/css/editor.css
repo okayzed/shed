@@ -162,12 +162,19 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 /* REPLAY CONTROLS */
 .replaycontrols {
+  position: absolute;
   z-index: 10;
+  bottom: 10px;
+  right: 10px;
+}
+
+.replaypage .replay {
+  display: none;
 }
 
 #editorbox .replaycontrols {
   background: black;
-  padding: 5px;
+  color: white;
 }
 
 #editorbox .replaycontrols, #editorbox .replaycontrols .btn {
@@ -182,12 +189,21 @@ html, body, #page_content, .split-box, .editor-wrapper {
 .toolbar {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 20px;
   z-index: 10;
   opacity: 0.5;
 }
 
-.toolbar:hover {
+.bottombar {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 10;
+  opacity: 0.5;
+  min-width: 400px;
+}
+
+.bottombar:hover, .toolbar:hover {
   opacity: 1;
 }
 
@@ -220,29 +236,6 @@ html, body, #page_content, .split-box, .editor-wrapper {
 
 .wordcount:hover {
   opacity: 1;
-}
-
-.btn.replay {
-  position: absolute;
-  bottom: 10px;
-  right: 110px;
-  z-index: 10;
-}
-
-.settings {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-}
-
-.replaycontrols {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-}
-
-.btn.settings {
-  z-index: 10;
 }
 
 
