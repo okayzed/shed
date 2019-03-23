@@ -26,6 +26,7 @@ function initShed(id, replayMode) {
     lineNumbers: true,
     matchBrackets: true,
     extraKeys: extraKeys,
+    lineWrapping: true,
     hintOptions: {
       completeSingle: false
     }
@@ -111,7 +112,6 @@ function initShed(id, replayMode) {
       var cursor = cm.getCursor();
       cm.setValue(data.str)
       cm.setCursor(cursor);
-      cm.setOption("lineWrapping", true);
 
       serverAdapter = new ot.SocketIOAdapter(socket);
       editorAdapter = new ot.CodeMirrorAdapter(cm);
