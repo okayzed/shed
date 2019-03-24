@@ -1,6 +1,7 @@
 # shed.ot
 
-shed is a self-hosted shared editor + code runner
+shed is a self-hosted shared editor + code runner with the ability to watch
+replays of a session.
 
 ## Demo
 
