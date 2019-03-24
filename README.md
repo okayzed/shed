@@ -9,7 +9,7 @@ To see a demo, please visit https://code.algorithm.city
 ## Development
 
 ```
-docker build -t shed/runner .
+make docker-image
 npm install
 npm start
 ```
