@@ -8,7 +8,12 @@ var sequelize = new Sequelize('database', 'username', 'password', {
   define: {
     sync: { force: true },
     underscored: true
-  }
+  },
+  retry: {
+    max: 10
+  },
+  transactionType: 'IMMEDIATE',
+
 });
 
 
@@ -30,7 +35,11 @@ var replaydb = new Sequelize('database', 'username', 'password', {
   define: {
     sync: { force: true },
     underscored: true
-  }
+  },
+  retry: {
+    max: 10
+  },
+  transactionType: 'IMMEDIATE',
 });
 
 var PostOp = replaydb.define('PostOp', {
