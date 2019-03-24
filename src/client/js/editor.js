@@ -3,9 +3,37 @@ var docId;
 var cm;
 
 var _unseen_count = 0;
+var editorClient;
 
 function runCode() {
   socket.emit("run", docId);
+}
+
+
+
+function updateUserBar() {
+  $(".userbar").empty();
+  var pct = 100 / (Object.keys(editorClient.clients).length + 1);
+
+  function makebar(name, color) {
+    var nameEl = $("<div class='username'>");
+    nameEl.css({
+      "background-color": color,
+      "height" : "5px",
+      "width" : pct + "%"
+    });
+
+
+    nameEl.attr("title", name);
+    $(".userbar").append(nameEl);
+
+  }
+  for (var c in editorClient.clients) {
+    var cl = editorClient.clients[c];
+    makebar(cl.name || cl.id, cl.color);
+  }
+
+  makebar(CLIENT_NAME || "self", "#afafaf");
 }
 
 
@@ -116,8 +144,14 @@ function initShed(id, replayMode) {
       serverAdapter = new ot.SocketIOAdapter(socket);
       editorAdapter = new ot.CodeMirrorAdapter(cm);
       client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
+      editorClient = client;
     }
   });
+
+  setInterval(function() {
+    updateUserBar();
+  }, 1000);
+
 
   socket.on("output", function(output) {
     var pre = $(".stdout-pane pre")

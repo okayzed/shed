@@ -33,6 +33,10 @@ function setTheme(mode) {
   }
 }
 
+function setName(name) {
+  socket.emit("set_name", name);
+}
+
 function setIndent(amt) {
   try { amt = parseInt(amt, 10); }
   catch(e) { amt = 4; }
@@ -60,6 +64,12 @@ function showWordCount(v) {
   }
 }
 
+var CLIENT_NAME;
+function clientName(v) {
+  CLIENT_NAME = v;
+  socket.emit("set_name", v);
+}
+
 var DEFAULT_SETTINGS = {
   colorscheme: "default",
   keymap: "default",
@@ -80,32 +90,42 @@ function makeSettingsRow(options) {
   var labelEl = $("<span class='label' />");
   labelEl.text(options.text);
 
-  var btnGroupEl = $("<div class='btn-group btn-group-toggle controls' />");
-  btnGroupEl.attr("value", options.name);
-  btnGroupEl.addClass(options.name);
-  btnGroupEl.attr("data-toggle", "buttons");
-
-  for (var id in options.options) {
-    var opt = options.options[id];
-    var btnLabel = $("<label class='btn btn-secondary' />");
-    var inputEl = $("<input type='radio' />");
-    inputEl.attr("name", options.name);
-    inputEl.attr("id", id);
-    inputEl.attr("value", opt);
-
-    if (opt == saved[options.name]) {
-      btnLabel.addClass("active");
-      inputEl.prop("checked", true);
-    }
-    btnLabel.append(inputEl);
-    btnLabel.append(id);
-
-    btnGroupEl.append(btnLabel);
-  };
-
   var outerEl = $("<div class='clearfix' />");
   outerEl.append(labelEl);
-  outerEl.append(btnGroupEl);
+  if (options.options) {
+    var btnGroupEl = $("<div class='btn-group btn-group-toggle controls' />");
+    btnGroupEl.attr("value", options.name);
+    btnGroupEl.addClass(options.name);
+    btnGroupEl.attr("data-toggle", "buttons");
+
+    for (var id in options.options) {
+      var opt = options.options[id];
+      var btnLabel = $("<label class='btn btn-secondary' />");
+      var inputEl = $("<input type='radio' />");
+      inputEl.attr("name", options.name);
+      inputEl.attr("id", id);
+      inputEl.attr("value", opt);
+
+      if (opt == saved[options.name]) {
+        btnLabel.addClass("active");
+        inputEl.prop("checked", true);
+      }
+      btnLabel.append(inputEl);
+      btnLabel.append(id);
+
+      btnGroupEl.append(btnLabel);
+    };
+    outerEl.append(btnGroupEl);
+  }
+
+  if (options.input) {
+    var inputEl = $("<input type='text' class='input' />");
+    inputEl.attr("name", options.name);
+    console.log("SAVED", saved[options.name]);
+    inputEl.val(saved[options.name]);
+    outerEl.append(inputEl);
+  }
+
   return outerEl;
 }
 
@@ -142,6 +162,11 @@ function setSettings(options) {
     anyChange = true;
   }
 
+  if (options.clientName != prevSettings.clientName) {
+    clientName(options.clientName);
+    anyChange = true;
+  }
+
   if (anyChange) {
     localStorage.settings = JSON.stringify(options);
   }
@@ -160,11 +185,22 @@ function checkSettings() {
     opts[name] = $(this).find(":checked").attr("value")
   });
 
+  var inputRows = settingsEl.find(".input");
+  inputRows.each(function() {
+    var name = $(this).attr("name");
+    opts[name] = $(this).val();
+  });
+
   setSettings(opts);
 }
 
 function buildSettingsModal() {
   var settings = [
+    {
+      name: "clientName",
+      text: "Username",
+      input: true
+    },
     {
       name: "colorscheme",
       text: "Colorscheme",
@@ -216,7 +252,7 @@ function buildSettingsModal() {
         "Enabled": "true",
         "Disabled" : ""
       }
-    }
+    },
   ];
 
   var settingsModal = $("#settingsModal");

@@ -462,9 +462,13 @@ html, body, #page_content, .split-box, .editor-wrapper {
   font-weight: bold;
 }
 
-.settings .controls {
+.settings .controls, .settings .input {
   float: right;
   width: 200px;
+}
+
+.settings .input {
+  padding: 5px;
 }
 
 /* STDIN / STDOUT PANES */
@@ -615,6 +619,20 @@ html, body, #page_content, .split-box, .editor-wrapper {
   z-index: 10;
   opacity: 0.5;
   min-width: 400px;
+}
+
+.userbar {
+  position: absolute;
+  height: 5px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  opacity: 0.5;
+  z-index: 10;
+}
+
+.userbar .username {
+  display: inline-block;
 }
 
 .bottombar:hover, .toolbar:hover {

@@ -54,6 +54,9 @@ EditorSocketIOServer.prototype.addClient = function (socket) {
         self.updateSelection(socket, obj);
       });
     })
+    .on('set_name', function(name) {
+      self.setName(socket, name);
+    })
     .on('disconnect', function () {
       socket.leave(self.docId);
       self.onDisconnect(socket);
