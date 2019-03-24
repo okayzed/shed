@@ -61,7 +61,7 @@
       $(".timeago").timeago();
 
       $(".postlink").on("click", function(e) {
-        var href = $(e.target).find("a").attr('href');
+        var href = $(e.target).closest(".postlink").find("a").attr('href');
         window.location = href;
       });
     });
