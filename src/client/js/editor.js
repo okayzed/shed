@@ -148,9 +148,11 @@ function initShed(id, replayMode) {
     }
   });
 
-  setInterval(function() {
-    updateUserBar();
-  }, 1000);
+  if (!replayMode) {
+    setInterval(function() {
+      updateUserBar();
+    }, 1000);
+  }
 
 
   socket.on("output", function(output) {
