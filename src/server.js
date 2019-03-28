@@ -32,7 +32,7 @@ var basic = auth.basic({
 });
 
 function randid() {
-  var i = parseInt(Math.random() * 1e9+7)
+  var i = parseInt(Math.random() * (1e9+7))
   return i.toString(16);
 }
 
