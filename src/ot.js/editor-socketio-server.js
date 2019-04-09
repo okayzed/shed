@@ -113,8 +113,10 @@ EditorSocketIOServer.prototype.updateSelection = function (socket, selection) {
 
 EditorSocketIOServer.prototype.setName = function (socket, name) {
   var clientId = socket.id;
+  var oldName = this.getClient(clientId).name;
   this.getClient(clientId).name = name;
   socket.broadcast['in'](this.docId).emit('set_name', clientId, name);
+  socket.broadcast['in'](this.docId).emit("output", oldName+" changed their username to "+name+".<br/>");
 };
 
 EditorSocketIOServer.prototype.getClient = function (clientId) {
@@ -123,8 +125,10 @@ EditorSocketIOServer.prototype.getClient = function (clientId) {
 
 EditorSocketIOServer.prototype.onDisconnect = function (socket) {
   var clientId = socket.id;
+  var name = this.getClient(socket.id).name;
   delete this.users[clientId];
   socket.broadcast['in'](this.docId).emit('client_left', clientId);
+  socket.broadcast['in'](this.docId).emit("output",name+" left.<br/>");
 };
 
 module.exports = EditorSocketIOServer;

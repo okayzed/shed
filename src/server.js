@@ -3,6 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var randomName = require('./client/js/Randomizer.js');
 
 var runDoc = require("./runner").runDoc;
 var runReplay = require("./runner").runReplay;
@@ -125,8 +126,11 @@ io.on('connection', function(socket) {
   var _room, _stdin;
   socket.on("join", function(room) {
     _room = room;
+    socket.name = randomName();
+    socket.broadcast.in(_room).emit("output",socket.name+" user joined.<br>");
     var server = getRoom(room, function(server) {
       server.addClient(socket);
+      server.getClient(socket.id).name = socket.name;
 
       getDoc(room, function(doc) {
         socket.emit("set_language", doc.filetype);

@@ -154,7 +154,6 @@ function initShed(id, replayMode) {
     }, 1000);
   }
 
-
   socket.on("output", function(output) {
     var pre = $(".stdout-pane pre")
       .append(output);
