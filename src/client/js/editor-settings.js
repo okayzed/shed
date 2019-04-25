@@ -73,9 +73,9 @@ function clientName(v) {
 var DEFAULT_SETTINGS = {
   colorscheme: "default",
   keymap: "default",
-  indent: "4",
+  indent: "2",
   autoCloseBrackets: true,
-  autoComplete: false,
+  autoComplete: true,
   showWordCount: false
 };
 function makeSettingsRow(options) {

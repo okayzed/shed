@@ -162,6 +162,12 @@ html, body, #page_content, .split-box, .editor-wrapper {
   max-height: calc(100% - 20px);
   padding: 5px;
   white-space: pre-wrap;
+  max-width: 100%;
+  word-wrap: break-all;
+}
+
+.chat-input {
+  width: 99%;
 }
 
 /* REPLAY CONTROLS */

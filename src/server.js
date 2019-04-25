@@ -10,6 +10,7 @@ var runReplay = require("./runner").runReplay;
 var Post = require("./models").Post;
 var PostOp = require("./models").PostOp;
 var getPostOps = require("./models").getPostOps;
+var Chat = require("./models").Chat;
 var path = require('path');
 var ejs = require('ejs');
 
@@ -121,6 +122,10 @@ function addChange(randid, operation, cb) {
   PostOp.create({ randid: randid, change: operation });
 }
 
+function addChat(randid, text) {
+  Chat.create({ randid: randid, text: text });
+}
+
 
 io.on('connection', function(socket) {
   var _room, _stdin;
@@ -136,6 +141,12 @@ io.on('connection', function(socket) {
         socket.emit("set_language", doc.filetype);
         socket.emit("stdin", doc.stdin);
       });
+    });
+    Chat.findAll({where:{randid:room}}).then(function(texts) {
+      for (var t in texts) {
+        var text = texts[t];
+        socket.emit("chat", text.text);
+      }
     });
   });
 
@@ -164,6 +175,13 @@ io.on('connection', function(socket) {
     });
   });
 
+  socket.on("chat", function(text) {
+    var name = socket.name;
+    text = name+": "+text;
+    socket.broadcast.in(_room).emit("chat", text);
+    socket.emit("chat", text);
+    addChat(_room, text);
+  });
 
   socket.on("stdin", function(stdin) {
     _stdin = stdin;
