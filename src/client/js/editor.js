@@ -125,6 +125,15 @@ function initShed(id, replayMode) {
     }
   });
 
+  socket.on("chat", function(output) {
+    var div = $("<div/>");
+    div.text(output);
+    var pre = $(".stdout-pane pre")
+      .append(div);
+    pre.scrollTop(pre.prop("scrollHeight"));
+    update_toggle_count(1);
+  });
+
   var serverAdapter, editorAdapter, client;
   socket.on("doc", function(data) {
     if (!replayMode) {
@@ -333,6 +342,14 @@ function initShed(id, replayMode) {
   $(".output-toggle").on("click", function() {
     showingEditor = !showingEditor;
     sync_editor();
+  });
+
+  $(".chat-input").on("keyup",function(e) {
+    if (e.keyCode == '13') {
+      var text = $(".chat-input").val();
+      socket.emit("chat",text);
+      $(".chat-input").val("");
+    }
   });
 
   $(function() {

@@ -28,6 +28,15 @@ var Post = sequelize.define('Post', {
   }]
 });
 
+var Chat = sequelize.define('Chat', {
+  text: Sequelize.TEXT,
+  randid: Sequelize.STRING
+}, {
+  indexes: [ {
+    fields: ['randid']
+  }]
+});
+
 var replaydb = new Sequelize('database', 'username', 'password', {
   dialect: 'sqlite',
   storage: 'replays.sqlite',
@@ -153,3 +162,4 @@ module.exports.instance = sequelize;
 module.exports.Post = Post;
 module.exports.PostOp = PostOp;
 module.exports.getPostOps = getPostOps;
+module.exports.Chat = Chat;
