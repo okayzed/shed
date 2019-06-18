@@ -9,6 +9,10 @@ body.max, html.max {
   height: 100%;
 }
 
+.CodeMirror-lines {
+  padding-bottom: 200px;
+}
+
 
 /* BODY */
 body .container-fluid {

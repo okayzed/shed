@@ -32,6 +32,7 @@ function updateUserBar() {
     var cl = editorClient.clients[c];
     makebar(cl.name || cl.id, cl.color);
   }
+  cm.setSize();
 
   makebar(CLIENT_NAME || "self", "#afafaf");
 }
@@ -47,7 +48,16 @@ function initShed(id, replayMode) {
     "Ctrl-C": function (cm) {
         if (!mac && cm.getOption('keyMap').substr(0, 3) === 'vim') document.execCommand("copy");
         else return CodeMirror.Pass;
+    },
+    "Tab": (cm) => {
+      if (cm.somethingSelected()) {
+        cm.indentSelection("add");
+      } else {
+        cm.replaceSelection(cm.getOption("indentWithTabs")? "\t":
+            Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input");
+      }
     }
+
   };
 
   cm = CodeMirror.fromTextArea(document.getElementById("note"), {
