@@ -107,6 +107,10 @@ function getPostOps(randid, cb) {
           dirty = true;
         }
 
+        if (change.created_at) {
+          change.created_at = new Date(change.created_at).toISOString();
+        }
+
         if (change.randid) {
           delete change.randid;
           dirty = true;
