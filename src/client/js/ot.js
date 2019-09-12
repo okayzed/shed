@@ -1295,7 +1295,7 @@ ot.CodeMirrorAdapter = (function (global) {
     cursorEl.style.position = 'absolute';
     cursorEl.style.zIndex = 0;
     cursorEl.setAttribute('data-clientid', clientId);
-    return this.cm.setBookmark(cursorPos, { widget: cursorEl, insertLeft: true });
+    return this.cm.setBookmark(cursorPos, { widget: cursorEl, insertLeft: false });
   };
 
   CodeMirrorAdapter.prototype.setOtherSelectionRange = function (range, color, clientId) {
