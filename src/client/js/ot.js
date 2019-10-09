@@ -1669,6 +1669,23 @@ ot.EditorClient = (function () {
     this.editorAdapter.registerUndo(function () { self.undo(); });
     this.editorAdapter.registerRedo(function () { self.redo(); });
 
+    var _pendingSelections = {};
+    var applySelect =  _.debounce(function() {
+      for (var k in _pendingSelections) {
+        console.log("RESELECTING", k, JSON.stringify(_pendingSelections[k]));
+        serverAdapter.callbacks.selection(k, _pendingSelections[k]);
+      }
+
+      _pendingSelections = {};
+    }, 100);
+    function reSelect(clientId, selection) {
+      if (selection) {
+        _pendingSelections[clientId] = selection;
+        applySelect();
+      }
+
+    }
+
     this.serverAdapter.registerCallbacks({
       client_left: function (clientId) { self.onClientLeft(clientId); },
       set_name: function (clientId, name) { self.getClientObject(clientId).setName(name); },
@@ -1679,11 +1696,11 @@ ot.EditorClient = (function () {
       selection: function (clientId, selection) {
         // [okay] I don't like cursor jitter;
         if (!self.state instanceof ot.Client.Synchronized) {
-          return;
+          return reSelect(clientId, selection);
         }
 
-        if (selection && selection.revision != self.revision) {
-          return;
+        if (selection && selection.revision && selection.revision != self.revision) {
+          return reSelect(clientId, selection);
         }
 
         if (selection) {
