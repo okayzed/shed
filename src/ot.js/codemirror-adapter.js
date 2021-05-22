@@ -140,6 +140,7 @@ ot.CodeMirrorAdapter = (function (global) {
 
   // Apply an operation to a CodeMirror instance.
   CodeMirrorAdapter.applyOperationToCodeMirror = function (operation, cm) {
+    var before = cm.cursorCoords(null, "page").top;
     cm.operation(function () {
       var ops = operation.ops;
       var index = 0; // holds the current index into CodeMirror's content
@@ -157,6 +158,9 @@ ot.CodeMirrorAdapter = (function (global) {
         }
       }
     });
+    var after = cm.cursorCoords(null, "page").top;
+    var offset = cm.getScrollInfo().top;
+    cm.scrollTo(null, after - before + offset);
   };
 
   CodeMirrorAdapter.prototype.registerCallbacks = function (cb) {
