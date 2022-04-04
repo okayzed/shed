@@ -25,12 +25,12 @@
   },
   "homepage": "https://github.com/YingshanDeng/ot.js-demo#readme",
   "dependencies": {
-    "codemirror": "^5.34.0",
+    "codemirror": "^5.61.1",
+    "ejs": "x",
     "express": "^4.16.2",
+    "http-auth": "x",
+    "sequelize": "x",
     "socket.io": "^2.0.4",
-    "sequelize" : "x",
-    "http-auth" : "x",
-    "sqlite3" : "x",
-    "ejs" : "x"
+    "sqlite3": "x"
   }
 }
