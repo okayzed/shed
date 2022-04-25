@@ -5,6 +5,8 @@ var cm;
 var _unseen_count = 0;
 var editorClient;
 
+let codeOutputsDisplayed = 0;
+
 function runCode() {
   socket.emit("run", docId);
 }
@@ -191,12 +193,21 @@ function initShed(id, replayMode) {
     return l;
   }
 
-  socket.on("ran", function(stdout, stderr) {
+  socket.on("ran", function(stdout, stderr, totalOutputs) {
     var textEl = $("<div class='card' />");
-    var txt = stdout.join("").trim();
+      
+    var pre = $(".stdout-pane pre");
+    var top = pre.prop("scrollHeight");
 
+    var txt = stdout;
     textEl.text(txt);
     update_toggle_count(1);
+    updateRunOutputCount();
+      console.log(codeOutputsDisplayed);
+    if(codeOutputsDisplayed != undefined || codeOutputsDisplayed !== totalOutputs) {
+      // clear all of the cards this was probably caused because the socket was disconnected
+      pre.empty();
+    }
     if (txt.length > 500 || countNewlines(txt) > 30) {
       var prp = $("<a class='expander' href='#'>Expand</a>");
       var tgl = false;
@@ -220,8 +231,6 @@ function initShed(id, replayMode) {
     var errEl = $("<div class='stderr'/>");
     errEl.text(stderr.join("").trim());
 
-    var pre = $(".stdout-pane pre");
-    var top = pre.prop("scrollHeight");
 
     pre
       .append(textEl)
@@ -329,6 +338,11 @@ function initShed(id, replayMode) {
     if (showingEditor && _unseen_count) {
       $(".output-toggle").text("Output (" + _unseen_count + ")");
     }
+  }
+  
+  function updateRunOutputCount() {
+    // keep track of how many code outputs are being displayed on the client side
+    codeOutputsDisplayed++;
   }
 
   function reset_toggle_count() {
