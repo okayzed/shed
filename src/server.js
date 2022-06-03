@@ -44,13 +44,13 @@ app.get('/', function(req, res) {
   res.render('welcome.html', { name: name});
 });
 
-//app.get('/all', auth.connect(basic), function(req, res) {
-//  Post.findAll().then(function(posts) {
-//    posts.reverse()
-//    res.render('all.html', {posts: posts});
-//
-//  });
-//});
+app.get('/all', auth.connect(basic), function(req, res) {
+  Post.findAll().then(function(posts) {
+    posts.reverse()
+    res.render('all.html', {posts: posts});
+
+  });
+});
 
 app.get('/new', function(req, res) {
   res.redirect('/p/' + randid());
@@ -157,7 +157,8 @@ io.on('connection', function(socket) {
     });
 
     RunLog.findAll({where:{randid:room}}).then(function(codeOutputs) {
-      //socket.emit("clearRunHist");
+      // used for bug where socket disconnects
+      socket.emit("clearRunHist");
       for (let output of codeOutputs) {
         socket.emit("ran", output.text, [], codeOutputs.length)
       }
