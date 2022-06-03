@@ -5,8 +5,6 @@ var cm;
 var _unseen_count = 0;
 var editorClient;
 
-let codeOutputsDisplayed = 0;
-
 function runCode() {
   socket.emit("run", docId);
 }
