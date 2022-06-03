@@ -135,6 +135,12 @@ function initShed(id, replayMode) {
         fastPlayBack();
       });
     }
+      // draw all the text again here
+  });
+
+  socket.on("clearRunHist", function() {
+      var pre = $(".stdout-pane pre");
+      pre.innerHTML = "";
   });
 
   socket.on("chat", function(output) {
@@ -202,12 +208,7 @@ function initShed(id, replayMode) {
     var txt = stdout;
     textEl.text(txt);
     update_toggle_count(1);
-    updateRunOutputCount();
-      console.log(codeOutputsDisplayed);
-    if(codeOutputsDisplayed != undefined || codeOutputsDisplayed !== totalOutputs) {
-      // clear all of the cards this was probably caused because the socket was disconnected
-      pre.empty();
-    }
+
     if (txt.length > 500 || countNewlines(txt) > 30) {
       var prp = $("<a class='expander' href='#'>Expand</a>");
       var tgl = false;
@@ -340,10 +341,6 @@ function initShed(id, replayMode) {
     }
   }
   
-  function updateRunOutputCount() {
-    // keep track of how many code outputs are being displayed on the client side
-    codeOutputsDisplayed++;
-  }
 
   function reset_toggle_count() {
     _unseen_count = 0;

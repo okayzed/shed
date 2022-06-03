@@ -123,7 +123,7 @@ function addChange(randid, operation, cb) {
   PostOp.create({ randid: randid, change: operation });
 }
 
-function saveRunHistory(randid, codeOutput) {
+function addHistory(randid, codeOutput) {
     RunLog.create({ randid: randid, text: codeOutput });
 }
 
@@ -147,25 +147,28 @@ io.on('connection', function(socket) {
         socket.emit("stdin", doc.stdin);
       });
     });
+
     Chat.findAll({where:{randid:room}}).then(function(texts) {
       for (var t in texts) {
         var text = texts[t];
         socket.emit("chat", text.text);
       }
+      
     });
 
     RunLog.findAll({where:{randid:room}}).then(function(codeOutputs) {
-        console.log(codeOutputs.length);
-
+      //socket.emit("clearRunHist");
       for (let output of codeOutputs) {
         socket.emit("ran", output.text, [], codeOutputs.length)
       }
     });
+
   });
+
 
   socket.on("run", function(room, stdin) {
     getDoc(room, function(doc) {
-      runDoc(room, doc, stdin, socket, saveRunHistory);
+      runDoc(room, doc, stdin, socket, addHistory);
     });
   });
 
