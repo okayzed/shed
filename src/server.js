@@ -11,6 +11,7 @@ var Post = require("./models").Post;
 var PostOp = require("./models").PostOp;
 var getPostOps = require("./models").getPostOps;
 var Chat = require("./models").Chat;
+var RunLog = require("./models").RunLog;
 var path = require('path');
 var ejs = require('ejs');
 
@@ -122,6 +123,10 @@ function addChange(randid, operation, cb) {
   PostOp.create({ randid: randid, change: operation });
 }
 
+function addHistory(randid, codeOutput) {
+    RunLog.create({ randid: randid, text: codeOutput });
+}
+
 function addChat(randid, text) {
   Chat.create({ randid: randid, text: text });
 }
@@ -132,7 +137,7 @@ io.on('connection', function(socket) {
   socket.on("join", function(room) {
     _room = room;
     socket.name = randomName();
-    socket.broadcast.in(_room).emit("output",socket.name+" user joined.<br>");
+    socket.broadcast.in(_room).emit("output", socket.name + " user joined.<br>");
     var server = getRoom(room, function(server) {
       server.addClient(socket);
       server.getClient(socket.id).name = socket.name;
@@ -142,17 +147,29 @@ io.on('connection', function(socket) {
         socket.emit("stdin", doc.stdin);
       });
     });
+
     Chat.findAll({where:{randid:room}}).then(function(texts) {
       for (var t in texts) {
         var text = texts[t];
         socket.emit("chat", text.text);
       }
+      
     });
+
+    RunLog.findAll({where:{randid:room}}).then(function(codeOutputs) {
+      // used for bug where socket disconnects
+      socket.emit("clearRunHist");
+      for (let output of codeOutputs) {
+        socket.emit("ran", output.text, [], codeOutputs.length)
+      }
+    });
+
   });
+
 
   socket.on("run", function(room, stdin) {
     getDoc(room, function(doc) {
-      runDoc(room, doc, stdin, socket);
+      runDoc(room, doc, stdin, socket, addHistory);
     });
   });
 

@@ -36,7 +36,7 @@
 
         <div class="clearfix mbl toolbar">
 
-          <%- include partials/languages.html %>
+          <%- include('partials/languages.html') %>
         </div>
 
         <div class='clearfix userbar'>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="split-pane clearfix fd" id="outputbox">
-        <%- include partials/bottombar.html %>
+        <%- include('partials/bottombar.html') %>
         <div class='stdin-pane pane third collapse'>
           <textarea ></textarea>
         </div>
@@ -73,7 +73,7 @@
     initShed("<%= docId %>");
   </script>
 
-  <%- include partials/settings.html %>
+  <%- include('partials/settings.html') %>
 
 
 </body>

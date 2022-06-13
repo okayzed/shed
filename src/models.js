@@ -28,6 +28,15 @@ var Post = sequelize.define('Post', {
   }]
 });
 
+var RunLog = sequelize.define('RunLog', {
+  text: Sequelize.TEXT,
+  randid: Sequelize.STRING
+}, {
+  indexes: [ {
+    fields: ['randid']
+  }]
+});
+
 var Chat = sequelize.define('Chat', {
   text: Sequelize.TEXT,
   randid: Sequelize.STRING
@@ -164,6 +173,7 @@ setInterval(packPostOps, 12 * 60 * 60 * 1000);
 // all models defined need to be required somewhere before the main setup is called
 module.exports.instance = sequelize;
 module.exports.Post = Post;
+module.exports.RunLog = RunLog;
 module.exports.PostOp = PostOp;
 module.exports.getPostOps = getPostOps;
 module.exports.Chat = Chat;

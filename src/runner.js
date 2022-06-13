@@ -1,3 +1,4 @@
+
 var child_process = require("child_process");
 
 var EOF = "";
@@ -28,7 +29,7 @@ function compileOkp(text, cb) {
 
 }
 
-function runCode(room, code, lang, stdin, socket) {
+function runCode(room, code, lang, stdin, socket, saveRunHistory) {
   var this_socket = socket;
 
   var lines = []
@@ -54,9 +55,10 @@ function runCode(room, code, lang, stdin, socket) {
         results.push(lines[i] + "\n");
       }
     }
-
-    socket.broadcast.in(room).emit("ran", results, stderr);
-    socket.emit("ran", results, stderr);
+    var codeOutput = results.join('').trim();
+    socket.broadcast.in(room).emit("ran", codeOutput, stderr);
+    socket.emit("ran", codeOutput, stderr);
+    saveRunHistory(room, codeOutput);
   });
 
 
@@ -85,7 +87,7 @@ function runCode(room, code, lang, stdin, socket) {
 
 }
 
-function runDoc(room, doc, stdin, socket) {
+function runDoc(room, doc, stdin, socket, cb) {
   socket.broadcast.in(room).emit("output", "> Running...\n")
   socket.emit("output", "> Running...\n")
   console.log("RUNNING PROGRAM");
@@ -95,7 +97,7 @@ function runDoc(room, doc, stdin, socket) {
       runCode(room, code, "cpp", stdin, socket);
     });
   } else {
-    runCode(room, doc.text, doc.filetype, stdin, socket);
+    runCode(room, doc.text, doc.filetype, stdin, socket, cb);
   }
 
 }

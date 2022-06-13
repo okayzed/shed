@@ -133,6 +133,12 @@ function initShed(id, replayMode) {
         fastPlayBack();
       });
     }
+      // draw all the text again here
+  });
+
+  socket.on("clearRunHist", function() {
+      var pre = $(".stdout-pane pre");
+      pre.innerHTML = "";
   });
 
   socket.on("chat", function(output) {
@@ -191,12 +197,16 @@ function initShed(id, replayMode) {
     return l;
   }
 
-  socket.on("ran", function(stdout, stderr) {
+  socket.on("ran", function(stdout, stderr, totalOutputs) {
     var textEl = $("<div class='card' />");
-    var txt = stdout.join("").trim();
+      
+    var pre = $(".stdout-pane pre");
+    var top = pre.prop("scrollHeight");
 
+    var txt = stdout;
     textEl.text(txt);
     update_toggle_count(1);
+
     if (txt.length > 500 || countNewlines(txt) > 30) {
       var prp = $("<a class='expander' href='#'>Expand</a>");
       var tgl = false;
@@ -220,8 +230,6 @@ function initShed(id, replayMode) {
     var errEl = $("<div class='stderr'/>");
     errEl.text(stderr.join("").trim());
 
-    var pre = $(".stdout-pane pre");
-    var top = pre.prop("scrollHeight");
 
     pre
       .append(textEl)
@@ -330,6 +338,7 @@ function initShed(id, replayMode) {
       $(".output-toggle").text("Output (" + _unseen_count + ")");
     }
   }
+  
 
   function reset_toggle_count() {
     _unseen_count = 0;
