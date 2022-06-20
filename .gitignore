@@ -58,4 +58,10 @@ typings/
 .env
 
 # htpasswd
+#
+
+
+#dbs
+db.sqlite
+replays.sqlite
 users.htpasswd
