@@ -31,7 +31,7 @@
     "http-auth": "x",
     "nodemon": "^2.0.16",
     "sequelize": "x",
-    "socket.io": "^2.0.4",
+    "socket.io": "^2.5.0",
     "sqlite3": "x"
   }
 }
