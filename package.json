@@ -27,7 +27,7 @@
   "dependencies": {
     "codemirror": "^5.61.1",
     "ejs": "x",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "http-auth": "x",
     "nodemon": "^2.0.16",
     "sequelize": "x",
